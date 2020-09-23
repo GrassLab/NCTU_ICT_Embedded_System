@@ -1,0 +1,43 @@
+[
+{
+	"uri": "/NCTU_ICT_Embedded_System/lab1/step1/",
+	"title": "1. Raspberry Pi Introuction",
+	"tags": [],
+	"description": "",
+	"content": "description\ncode\nint i; printf(); ls pwd #copy paste "
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/lab1/step2/",
+	"title": "Step2",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/lab1/",
+	"title": "Lab1",
+	"tags": [],
+	"description": "",
+	"content": "Lab1 Environment Setup Blah..\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/",
+	"title": "",
+	"tags": [],
+	"description": "",
+	"content": "EOSDI Blah\u0026hellip;\nBlah\u0026hellip;\nBlah\u0026hellip;\nBlah\u0026hellip;\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
