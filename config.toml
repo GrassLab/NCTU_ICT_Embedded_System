@@ -1,0 +1,25 @@
+baseURL = "/NCTU_ICT_Embedded_System/"
+languageCode = "zh-tw"
+title = "NCTU-EOSDI"
+
+theme = "hugo-theme-learn"
+
+# For search functionality
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+[params]
+    themeVariant = "blue"
+
+defaultContentLanguage = "en"
+
+[Languages]
+[Languages.en]
+title = "NCTU, EOSDI"
+weight = 1
+languageName = "English"
+
+[Languages.tw]
+title = "國立交通大學, 嵌入式作業系統"
+weight = 2
+languageName = "繁體中文"
