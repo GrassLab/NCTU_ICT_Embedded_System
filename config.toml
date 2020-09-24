@@ -3,7 +3,7 @@ languageCode = "zh-tw"
 title = "NCTU-EOSDI"
 
 theme = "hugo-theme-learn"
-
+googleAnalytics = "UA-167313793-2"
 # For search functionality
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
