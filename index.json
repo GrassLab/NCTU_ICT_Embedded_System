@@ -1,31 +1,45 @@
 [
 {
 	"uri": "/NCTU_ICT_Embedded_System/lab1/step1/",
-	"title": "1. Raspberry Pi Introuction",
+	"title": "安裝樹莓派作業系統",
 	"tags": [],
 	"description": "",
-	"content": "description\ncode\nint i; printf(); ls pwd #copy paste "
+	"content": "作業系統映像檔安裝 請至樹莓派官網映像檔下載頁面下載 Raspberry Pi OS (32-bit) with desktop and recommended software。\n下載完畢後將壓縮檔解壓縮後，將SD卡置入讀卡機並插入個人電腦即可進行燒錄。 燒錄可以使用Raspberry Pi Imager\n開啟Imager後先選好你要燒錄的SD卡後，在選擇燒錄作業系統時請使用Use custom選項， 映像檔結構 Raspberry Pi OS 映像檔分為兩個部分，一個是Boot Partition，另一個是Linux的Root Partition\nBoot Partition 顧名思義為放置Linux開機所需相關檔案，包含Linux核心(kernel)，裝置描述檔案(Device Tree)，樹莓派自身所需韌體及設定檔。 該分區的檔案系統為FAT，因此Windows系統也可以直接讀取\n如果同學對於樹莓派開機流程及內部檔案有興趣可以參考以下兩個樹莓派官網提供之資訊\nBoot Partition檔案\n開機流程\nRoot Partition 該分割區放置的剩餘Linux作業系統所需的所有檔案。 該分區的檔案系統為Ext4，是Linux的檔案系統。 在Windows上讀取會需要額外的工具，這部分會在下一部份說明。\n"
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/lab1/step2/",
-	"title": "Step2",
+	"title": "設定SSH",
 	"tags": [],
 	"description": "",
-	"content": ""
+	"content": "雖然樹莓派有USB和HDMI介面，這使得開發上是可以像在一般Linux系統上面開發一樣。 但是在一般的情況下，嵌入式的開發主要還是透過UART或者網路連結嵌入式開發版。 在這個部分會教導在使用有線網路連結樹莓派和開發主機後，如何連線進入樹莓派系統\n設定靜態IP 在使用有線網路連結兩台電腦後，兩台電腦就形成了網路。 網路的溝通是透過IP位址來找到對方，因此需要設定開發主機和樹莓派的IP位址\n樹莓派靜態IP設定 在Windows上讀取Ext4檔案系統 由於樹莓派的部分設定檔是在Root Partition也就是Ext4檔案系統上，要在Windows系統調整設定檔需要透過額外工具。\nWindows可以透過Ext2Fsd來讀取Ext4檔案系統\n右鍵點選目標分區，選擇Assign Driver Letter 即可從Windows系統中讀到該映像檔Root Partition內容 dhcpcd.conf 設定 在可以讀到Root Partition後，可以看到在etc目錄底下有一個dhcpcd.conf的設定檔。 以記事本開啟後新增\ninterface eth0 static ip_address=192.168.1.2/24 完成後如下圖即可 Windows靜態IP設定   按下 Windows + R，輸入「ncpa.cpl」。   在新增的網卡上右鍵，然後選取【內容】\u0026gt; 【網際網路通訊協定第 4 版 (TCP/IPv4)】\n  點擊【使用下列的 IP 位址】\n IP 位址輸入 「 192.168.1.1 」 子網路遮罩輸入「 255.255.255.0 」 慣用 DNS 伺服器「 192.168.1.1 」    開啟樹莓派SSH服務 樹莓派預設開機後並沒有啟動SSH服務， 但是可以透過簡單在Boot Partition下(非Root Partition)建立ssh空檔案。 樹莓派開機後偵測到此檔案會自動開啟SSH服務。\n新增方法:\n 在 Boot Partition 當中按下右鍵，然後選取【新增】\u0026gt; 【文字文件】， 將名稱改為「ssh」。  "
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/lab1/step3/",
+	"title": "連線進入樹莓派及樹莓派無線網路設定",
+	"tags": [],
+	"description": "",
+	"content": "在上一部份中，透過開發主機完成了樹莓派的基礎設定。 將SD卡插入樹梅派後，連結電源和插入有線網路後，開發主機即可透過SSH工具連入樹莓派。\n這個部分會介紹如何透過MobaXterm連入樹莓派並教導如何使樹梅派透過無線網路連上網際網路。\nMobaXterm MobaXterm 是在Windows上一個十分便利終端機程式。 他可以建立SSH, Serial等方式與遠端建立連線，並且支援遠端檔案編輯。\n建立SSH連線  點選【Session】\u0026gt; 【SSH】 再Remote Host 輸入「192.168.1.2」 點選【Specify username】 再username欄位輸入pi 點擊 OK 輸入密碼raspberry 即可看到登入進樹莓派中  無線網路設定 由於開發主機和樹莓派之間的網路連線只是區域網路， 在沒有設定開發主機的封包轉發和NAT的狀況下，樹莓派是無法連至外部網路的。\n之後的實驗需要連線至網際網路的能力，這邊可以透過無線網路來達成。\n步驟  在終端機中輸入sudo raspi-config 選擇【Network Options】\u0026gt;【Wireless LAN】  輸入無線網路的 SSID 輸入無線網路的密碼 選擇【Finish】 使用 ping 指令確認是否連上網際網路  ping -c4 google.com     "
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/lab1/step4/",
+	"title": "Demo",
+	"tags": [],
+	"description": "",
+	"content": "實驗目標  完成網路設定 寫一個簡單的Hello World程式，在終端機上印出字串  不限程式語言    "
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/lab1/",
-	"title": "Lab1",
+	"title": "實驗一，開發幻境建置",
 	"tags": [],
 	"description": "",
-	"content": "Lab1 Environment Setup Blah..\n"
+	"content": "實驗一 開發環境建置 在開始嵌入式開發前我們必須準備好樹莓派硬體以及其作業系統，並需要做基本的設定以讓開發的主機有辦法連入樹莓派\n在實驗一，會一步步引導以建置樹梅派開發環境\n"
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/",
 	"title": "",
 	"tags": [],
 	"description": "",
-	"content": "EOSDI Blah\u0026hellip;\nBlah\u0026hellip;\nBlah\u0026hellip;\nBlah\u0026hellip;\n"
+	"content": "嵌入式作業系統設計與實作 課程介紹 本課程講授嵌入式作業系統內部的設計與實作方法。課程將透過一系列的實驗模組，以嵌入式平台(Raspberry pi 3)為例，從使用套件函式庫開始，引導學生學習嵌入式系統作業操作，了解其角色與用途。進而切入跨平台的嵌入式系統開發、核心編譯與驅動程式設計與實現。\n實驗說明 雖然這門課是入門等級的課程，即使沒有作業系統或者是開發版經驗的同學選修。 但是為了使實驗說明文件內容簡潔，文件的內容會假設同學已經會基本的命令列指令(如ls, cd, sudo\u0026hellip;) 如果同學不熟悉Linux開發環境，可以於網路上自行搜尋或者課堂時間詢問\n實驗文件使用的是樹莓派官網提供之映像檔的Raspberry Pi OS (32-bit) with desktop and recommended software。 若你使用的版本不同且有缺少相關套件，請自己另行安裝\n"
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/categories/",

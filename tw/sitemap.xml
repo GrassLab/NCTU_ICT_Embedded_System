@@ -3,90 +3,100 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/tw/lab1/step1/</loc>
+    <loc>/NCTU_ICT_Embedded_System/lab1/step1/</loc>
     <lastmod>2020-09-23T15:53:09+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/NCTU_ICT_Embedded_System/lab1/step1/"
+                href="/NCTU_ICT_Embedded_System/en/lab1/step1/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/tw/lab1/step1/"
+                href="/NCTU_ICT_Embedded_System/lab1/step1/"
                 />
   </url>
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/tw/lab1/step2/</loc>
+    <loc>/NCTU_ICT_Embedded_System/lab1/step2/</loc>
     <lastmod>2020-09-23T15:56:49+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/NCTU_ICT_Embedded_System/lab1/step2/"
+                href="/NCTU_ICT_Embedded_System/en/lab1/step2/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/tw/lab1/step2/"
+                href="/NCTU_ICT_Embedded_System/lab1/step2/"
                 />
   </url>
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/tw/lab1/</loc>
+    <loc>/NCTU_ICT_Embedded_System/lab1/step3/</loc>
+    <lastmod>2020-09-30T03:14:59+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/lab1/step4/</loc>
+    <lastmod>2020-09-30T03:45:59+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/lab1/</loc>
     <lastmod>2020-09-23T15:46:23+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/NCTU_ICT_Embedded_System/lab1/"
+                href="/NCTU_ICT_Embedded_System/en/lab1/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/tw/lab1/"
+                href="/NCTU_ICT_Embedded_System/lab1/"
                 />
   </url>
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/tw/</loc>
+    <loc>/NCTU_ICT_Embedded_System/</loc>
     <lastmod>2020-09-23T15:39:53+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
                 href="/NCTU_ICT_Embedded_System/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/tw/"
-                />
   </url>
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/tw/categories/</loc>
+    <loc>/NCTU_ICT_Embedded_System/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
                 href="/NCTU_ICT_Embedded_System/categories/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/tw/categories/"
-                />
   </url>
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/tw/tags/</loc>
+    <loc>/NCTU_ICT_Embedded_System/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/NCTU_ICT_Embedded_System/tags/"
+                href="/NCTU_ICT_Embedded_System/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/tw/tags/"
+                href="/NCTU_ICT_Embedded_System/tags/"
                 />
   </url>
   
