@@ -1,5 +1,5 @@
 +++
-title = "實驗一"
+title = "實驗一，開發環境建置"
 date = 2020-09-23T15:46:23Z
 weight = 5
 chapter = true
@@ -7,8 +7,8 @@ chapter = true
 
 ### 實驗一
 
-# 環境建置
+# 開發環境建置
 
-敘述敘述
+在開始嵌入式開發前我們必須準備好樹莓派硬體以及其作業系統，並需要做基本的設定以讓開發的主機有辦法連入樹莓派
 
-![](https://upload.wikimedia.org/wikipedia/commons/f/f1/Raspberry_Pi_4_Model_B_-_Side.jpg)
+在實驗一，會一步步引導以建置樹梅派開發環境

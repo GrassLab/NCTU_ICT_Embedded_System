@@ -5,20 +5,3 @@ weight: 1
 ---
 
 
-description
-
-code
-
-```c
-int i;
-printf();
-```
-
-```bash
-ls
-pwd
-```
-
-```
-#copy paste
-```

@@ -1,9 +1,11 @@
 baseURL = "/NCTU_ICT_Embedded_System/"
 languageCode = "zh-tw"
-title = "NCTU-EOSDI"
+title = "交通"
 
 theme = "hugo-theme-learn"
 googleAnalytics = "UA-167313793-2"
+
+DefaultContentLanguage = "tw"
 # For search functionality
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
@@ -11,15 +13,16 @@ home = [ "HTML", "RSS", "JSON"]
 [params]
     themeVariant = "blue"
 
-defaultContentLanguage = "en"
+
 
 [Languages]
-[Languages.en]
-title = "NCTU, EOSDI"
-weight = 1
-languageName = "English"
 
 [Languages.tw]
-title = "國立交通大學, 嵌入式作業系統"
-weight = 2
+title = "國立交通大學, 嵌入式作業系統設計與實作"
+weight = 1
 languageName = "繁體中文"
+
+[Languages.en]
+title = "NCTU, EOSDI"
+weight = 2
+languageName = "English"
