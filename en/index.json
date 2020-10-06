@@ -7,6 +7,20 @@
 	"content": ""
 },
 {
+	"uri": "/NCTU_ICT_Embedded_System/en/lab1/",
+	"title": "Lab1",
+	"tags": [],
+	"description": "",
+	"content": "Lab1 Environment Setup "
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/en/lab2/",
+	"title": "Lab2",
+	"tags": [],
+	"description": "",
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
+},
+{
 	"uri": "/NCTU_ICT_Embedded_System/en/lab1/step2/",
 	"title": "Step2",
 	"tags": [],
@@ -14,11 +28,46 @@
 	"content": ""
 },
 {
-	"uri": "/NCTU_ICT_Embedded_System/en/lab1/",
-	"title": "Lab1",
+	"uri": "/NCTU_ICT_Embedded_System/en/lab3/",
+	"title": "Lab3",
 	"tags": [],
 	"description": "",
-	"content": "Lab1 Environment Setup "
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/en/lab4/",
+	"title": "Lab4",
+	"tags": [],
+	"description": "",
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/en/lab5/",
+	"title": "Lab5",
+	"tags": [],
+	"description": "",
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/en/lab6/",
+	"title": "Lab6",
+	"tags": [],
+	"description": "",
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/en/term_project1/",
+	"title": "Term_project1",
+	"tags": [],
+	"description": "",
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
+},
+{
+	"uri": "/NCTU_ICT_Embedded_System/en/term_project2/",
+	"title": "Term_project2",
+	"tags": [],
+	"description": "",
+	"content": "Chapter X Some Chapter title Lorem Ipsum.\n"
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/en/",

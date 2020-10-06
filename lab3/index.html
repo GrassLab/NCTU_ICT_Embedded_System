@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="tw" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.75.1" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/NCTU_ICT_Embedded_System/images/favicon.png" type="image/png">
+
+    <title>實驗三，開發工具鏈準備 :: 國立交通大學, 嵌入式作業系統設計與實作</title>
+
+    
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1601984222" rel="stylesheet">
+    
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1601984222" rel="stylesheet">
+    
+    
+
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1601984222"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-167313793-2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </head>
+  <body class="" data-url="/NCTU_ICT_Embedded_System/lab3/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="/" id="homepage">
+    <b style="color: white;">NCTU-EOSDI</b>
+</a>
+
+<script>
+var postfix =  (document.documentElement.lang == "tw") ? ""  : document.documentElement.lang + "/"
+document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
+</script>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1601984222"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1601984222"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/NCTU_ICT_Embedded_System\/";
+    
+</script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1601984222"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/" title="實驗一，開發環境建置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab1/">
+          實驗一，開發環境建置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step1/" title="安裝樹莓派作業系統" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step1/">
+        安裝樹莓派作業系統
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step2/" title="設定SSH" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step2/">
+        設定SSH
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step3/" title="連線進入樹莓派及樹莓派無線網路設定" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step3/">
+        連線進入樹莓派及樹莓派無線網路設定
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab2/" title="實驗二，智慧家庭—以Python控制周邊裝置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab2/">
+          實驗二，智慧家庭—以Python控制周邊裝置
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab3/" title="實驗三，開發工具鏈準備" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab3/">
+          實驗三，開發工具鏈準備
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab4/" title="實驗四，Linux核心編譯" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab4/">
+          實驗四，Linux核心編譯
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/" title="實驗五，透過Linux核心直接控制週邊裝置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab5/">
+          實驗五，透過Linux核心直接控制週邊裝置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step1/" title="透過MMIO控制週邊裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step1/">
+        透過MMIO控制週邊裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step2/" title="透過sysfs操作GPIO" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step2/">
+        透過sysfs操作GPIO
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step3/" title="加入新的LED裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step3/">
+        加入新的LED裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/" title="實驗六，核心空間GPIO裝置驅動程式" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab6/">
+          實驗六，核心空間GPIO裝置驅動程式
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step1/" title="Linux核心模組" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step1/">
+        Linux核心模組
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step2/" title="平台裝置/驅動程式" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step2/">
+        平台裝置/驅動程式
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step3/" title="GPIO的中斷與sysfs" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step3/">
+        GPIO的中斷與sysfs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/" title="期末專題一，無線路由器基礎功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project1/">
+          期末專題一，無線路由器基礎功能
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step1/" title="基礎準備" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step1/">
+        基礎準備
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step2/" title="無線網路和路由相關工具" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step2/">
+        無線網路和路由相關工具
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step3/" title="無線路由器基本功能需求" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step3/">
+        無線路由器基本功能需求
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project2/" title="期末專題二，無線路由器額外功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project2/">
+          期末專題二，無線路由器額外功能
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="tw" value="/NCTU_ICT_Embedded_System/lab3/" selected>繁體中文</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="en" value="/NCTU_ICT_Embedded_System/en/lab3/">English</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/NCTU_ICT_Embedded_System/'></a> > 實驗三，開發工具鏈準備
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+          <div id="chapter">
+        
+        <div id="body-inner">
+          
+
+        
+
+
+
+	<h3 id="實驗三">實驗三</h3>
+<h1 id="開發工具鏈準備">開發工具鏈準備</h1>
+<p>請參考new E3.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+            </div> 
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/NCTU_ICT_Embedded_System/lab2/" title="實驗二，智慧家庭—以Python控制周邊裝置"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/NCTU_ICT_Embedded_System/lab4/" title="實驗四，Linux核心編譯" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1601984222"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1601984222"></script>
+    
+        
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1601984222"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+
+  </body>
+</html>

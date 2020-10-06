@@ -18,6 +18,36 @@
   </url>
   
   <url>
+    <loc>/NCTU_ICT_Embedded_System/en/lab1/</loc>
+    <lastmod>2020-09-23T15:46:20+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/lab1/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/lab1/"
+                />
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/en/lab2/</loc>
+    <lastmod>2020-10-05T10:21:10+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/lab2/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/lab2/"
+                />
+  </url>
+  
+  <url>
     <loc>/NCTU_ICT_Embedded_System/en/lab1/step2/</loc>
     <lastmod>2020-09-23T15:56:54+00:00</lastmod>
     <xhtml:link
@@ -33,17 +63,92 @@
   </url>
   
   <url>
-    <loc>/NCTU_ICT_Embedded_System/en/lab1/</loc>
-    <lastmod>2020-09-23T15:46:20+00:00</lastmod>
+    <loc>/NCTU_ICT_Embedded_System/en/lab3/</loc>
+    <lastmod>2020-10-05T10:21:13+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="tw"
-                href="/NCTU_ICT_Embedded_System/lab1/"
+                href="/NCTU_ICT_Embedded_System/lab3/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="/NCTU_ICT_Embedded_System/en/lab1/"
+                href="/NCTU_ICT_Embedded_System/en/lab3/"
+                />
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/en/lab4/</loc>
+    <lastmod>2020-10-05T10:21:21+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/lab4/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/lab4/"
+                />
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/en/lab5/</loc>
+    <lastmod>2020-10-05T03:47:50+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/lab5/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/lab5/"
+                />
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/en/lab6/</loc>
+    <lastmod>2020-10-05T03:48:24+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/lab6/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/lab6/"
+                />
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/en/term_project1/</loc>
+    <lastmod>2020-10-05T13:21:26+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/term_project1/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/term_project1/"
+                />
+  </url>
+  
+  <url>
+    <loc>/NCTU_ICT_Embedded_System/en/term_project2/</loc>
+    <lastmod>2020-10-05T13:21:30+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="tw"
+                href="/NCTU_ICT_Embedded_System/term_project2/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/NCTU_ICT_Embedded_System/en/term_project2/"
                 />
   </url>
   

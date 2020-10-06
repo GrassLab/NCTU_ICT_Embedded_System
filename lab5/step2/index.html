@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="tw" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.75.1" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/NCTU_ICT_Embedded_System/images/favicon.png" type="image/png">
+
+    <title>透過sysfs操作GPIO :: 國立交通大學, 嵌入式作業系統設計與實作</title>
+
+    
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1601984222" rel="stylesheet">
+    
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1601984222" rel="stylesheet">
+    
+    
+
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1601984222"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-167313793-2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </head>
+  <body class="" data-url="/NCTU_ICT_Embedded_System/lab5/step2/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="/" id="homepage">
+    <b style="color: white;">NCTU-EOSDI</b>
+</a>
+
+<script>
+var postfix =  (document.documentElement.lang == "tw") ? ""  : document.documentElement.lang + "/"
+document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
+</script>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1601984222"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1601984222"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/NCTU_ICT_Embedded_System\/";
+    
+</script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1601984222"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/" title="實驗一，開發環境建置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab1/">
+          實驗一，開發環境建置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step1/" title="安裝樹莓派作業系統" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step1/">
+        安裝樹莓派作業系統
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step2/" title="設定SSH" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step2/">
+        設定SSH
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step3/" title="連線進入樹莓派及樹莓派無線網路設定" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step3/">
+        連線進入樹莓派及樹莓派無線網路設定
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab2/" title="實驗二，智慧家庭—以Python控制周邊裝置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab2/">
+          實驗二，智慧家庭—以Python控制周邊裝置
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab3/" title="實驗三，開發工具鏈準備" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab3/">
+          實驗三，開發工具鏈準備
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab4/" title="實驗四，Linux核心編譯" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab4/">
+          實驗四，Linux核心編譯
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/" title="實驗五，透過Linux核心直接控制週邊裝置" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab5/">
+          實驗五，透過Linux核心直接控制週邊裝置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step1/" title="透過MMIO控制週邊裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step1/">
+        透過MMIO控制週邊裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step2/" title="透過sysfs操作GPIO" class="dd-item active">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step2/">
+        透過sysfs操作GPIO
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step3/" title="加入新的LED裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step3/">
+        加入新的LED裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/" title="實驗六，核心空間GPIO裝置驅動程式" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab6/">
+          實驗六，核心空間GPIO裝置驅動程式
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step1/" title="Linux核心模組" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step1/">
+        Linux核心模組
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step2/" title="平台裝置/驅動程式" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step2/">
+        平台裝置/驅動程式
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step3/" title="GPIO的中斷與sysfs" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step3/">
+        GPIO的中斷與sysfs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/" title="期末專題一，無線路由器基礎功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project1/">
+          期末專題一，無線路由器基礎功能
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step1/" title="基礎準備" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step1/">
+        基礎準備
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step2/" title="無線網路和路由相關工具" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step2/">
+        無線網路和路由相關工具
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step3/" title="無線路由器基本功能需求" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step3/">
+        無線路由器基本功能需求
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project2/" title="期末專題二，無線路由器額外功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project2/">
+          期末專題二，無線路由器額外功能
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="tw" value="/NCTU_ICT_Embedded_System/lab5/step2/" selected>繁體中文</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/NCTU_ICT_Embedded_System/'></a> > <a href='/NCTU_ICT_Embedded_System/lab5/'>實驗五，透過Linux核心直接控制週邊裝置</a> > 透過sysfs操作GPIO
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#sysfs-與-gpio">Sysfs 與 GPIO</a></li>
+    <li><a href="#結構化的驅動程式設計">結構化的驅動程式設計</a></li>
+    <li><a href="#shell-script範例">Shell Script範例</a>
+      <ul>
+        <li><a href="#上方腳本解釋">上方腳本解釋</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              透過sysfs操作GPIO
+            </h1>
+          
+
+        
+
+
+<p>在實驗二時曾經透過載入溫度感測器的驅動程式，然後讀取<code>/sys/</code>目錄底下的檔案來得到感測器的數值。
+這是透過Linux中特殊的檔案系統<a href="https://www.kernel.org/doc/html/latest/filesystems/sysfs.html">sysfs</a>來完成。</p>
+<p>同樣地，在Linux中的GPIO驅動程式也有結合sysfs，使得一般使用者不用寫程式，透過腳本語言就可以簡單控制GPIO。</p>
+<h2 id="sysfs-與-gpio">Sysfs 與 GPIO</h2>
+<p>在sysfs中，驅動程式可以跟sysfs註冊一系列的屬性，這些屬性會以檔案的形式出現在sysfs的目錄下面。
+這些屬性通常和裝置和驅動程式的行為緊密結合，使得使用者可以透過改變檔案的內容進而改變驅動程式的參數，最後改變裝置的行為。
+而部份簡單的輸入如GPIO也可以透過這些檔案來顯示當前參數或者輸入。</p>
+<p>在Linux核心中，sysfs屬性的註冊已經有既定的框架使得驅動程式的撰寫者可以更容易開發。
+所有關於寫入的屬性以<code>*_store</code>的方式命名，而讀取的屬性以<code>*_show</code>的方式命名。
+透過<code>ATTR</code>系列的Macro，會將相對應的資料結構一併建立完成。</p>
+<p>以<a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/gpio/gpiolib-sysfs.c#L101-L152">gpio-sysfs</a>為例，讀寫當前GPIO針腳電位的屬性名為<code>value</code>，
+可以看到驅動程式只須撰寫與GPIO相關的程式邏輯，而不必寫與sysfs相關的程式邏輯。</p>
+<h2 id="結構化的驅動程式設計">結構化的驅動程式設計</h2>
+<p>在前一個章節有介紹了週邊裝置的存取要透過MMIO，然而在上面的程式碼中並沒有見到任何與MMIO相關的程式碼。
+這個原因是因為不同的嵌入式裝置都有自己的GPIO控制晶片，如果在sysfs相關的程式碼中加入邏輯判斷不同的裝置採用不一樣的記憶體映射會導致程式碼混雜。
+在Linux核心中，驅動程式的設計都是有階層結構化的，簡單如GPIO也不例外。</p>
+<p>以GPIO輸入的數值為例，從gpio-sysfs中可以看到數值是透過<code>gpiod_get_value_cansleep</code>得到，這個函式的是在另一份原始碼
+<a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/gpio/gpiolib.c#L4061-L4076">gpiolib</a>定義，
+繼續往下追蹤可以看到<a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/gpio/gpiolib.c#L3274">chip-get</a>的函式呼叫。</p>
+<p>這個函式呼叫會找到對應的GPIO晶片並呼叫對應的方法來得到輸入的值，
+樹莓派使用的針腳驅動程式
+<a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/pinctrl/bcm/pinctrl-bcm2835.c#L343-L357">pinctrl-bcm2835</a>會在載入時註冊一系列方法。
+因此在一系列的函式呼叫後，最後會呼叫到<a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/pinctrl/bcm/pinctrl-bcm2835.c#L236-L239">bcm2835_gpio_rd</a>並讀取GPIO的數值。</p>
+<p>由上面例子可以學到如何以結構化的方式將抽象的行為和實際的硬體操作解藕，在進行實際的驅動程式開發時也能事半功倍。</p>
+<h2 id="shell-script範例">Shell Script範例</h2>
+<p>在了解了以上GPIO和sysfs的基本原理後，可以嘗試用腳本語言來達到控制GPIO的效果</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+output<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+input<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+
+echo $output &gt; /sys/class/gpio/export
+echo out &gt; /sys/class/gpio/gpio<span style="color:#e6db74">${</span>output<span style="color:#e6db74">}</span>/direction
+echo $input &gt; /sys/class/gpio/export
+echo in &gt; /sys/class/gpio/gpio<span style="color:#e6db74">${</span>input<span style="color:#e6db74">}</span>/direction
+
+trap <span style="color:#e6db74">&#34;echo </span><span style="color:#e6db74">${</span>output<span style="color:#e6db74">}</span><span style="color:#e6db74"> &gt; /sys/class/gpio/unexport;\
+</span><span style="color:#e6db74">	echo </span><span style="color:#e6db74">${</span>input<span style="color:#e6db74">}</span><span style="color:#e6db74"> &gt; /sys/class/gpio/unexport; exit&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	SIGHUP SIGINT SIGTERM
+
+
+<span style="color:#66d9ef">while</span> true
+<span style="color:#66d9ef">do</span>
+	a<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat /sys/class/gpio/gpio<span style="color:#e6db74">${</span>input<span style="color:#e6db74">}</span>/value<span style="color:#66d9ef">)</span>
+	echo $a | tee /sys/class/gpio/gpio<span style="color:#e6db74">${</span>output<span style="color:#e6db74">}</span>/value
+	sleep 0.3
+<span style="color:#66d9ef">done</span>
+</code></pre></div><p>在儲存上述檔案為<code>gpio.sh</code>後可以將其以<code>chmod +x</code>轉為可執行，便可以直接執行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">chmod +x gpio.sh
+./gpio.sh
+</code></pre></div><h3 id="上方腳本解釋">上方腳本解釋</h3>
+<p>如果對於腳本語言不熟悉的同學可以參考下方解釋，並自行嘗試其他變化以熟悉。
+對於沒見過得指令可以用<code>man</code>或者直接google來查詢。</p>
+<hr>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span></code></pre></div><ul>
+<li>上面看起來像是註解的內容被稱作<a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">Shebang</a>，
+<ul>
+<li>其原理為Linux核心執行一個執行檔時，會先檢查該檔案開頭的部份。如果發現了<code>#!</code>則會認為這是一個給直譯器讀的腳本，Linux核心會執行該直譯器，並將該腳本檔案路徑作為參數傳遞給該直譯器。</li>
+<li>該直譯器在被執行後可以根據參數打開腳本並且執行對應的內容。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">output<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+input<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+</code></pre></div><ul>
+<li>在bash中也有變數，可以直接賦予變數數值。</li>
+</ul>
+<hr>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo $output &gt; /sys/class/gpio/export
+<span style="color:#75715e"># echo 3 &gt; /sys/class/gpio/export</span>
+echo out &gt; /sys/class/gpio/gpio<span style="color:#e6db74">${</span>output<span style="color:#e6db74">}</span>/direction
+<span style="color:#75715e"># echo out &gt; /sys/class/gpio/gpio3/direction</span>
+</code></pre></div><ul>
+<li><code>echo</code>會將後方的字串印出到stdout。</li>
+<li>為了區分變數和一般字串，使用<code>$</code>和<code>{}</code>來標示是變數，變數會被替代為之前賦予的值。</li>
+<li><code>&gt;</code>可以重新導向stdout的值到後方指定的檔案。</li>
+</ul>
+<hr>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">trap <span style="color:#e6db74">&#34;echo </span><span style="color:#e6db74">${</span>output<span style="color:#e6db74">}</span><span style="color:#e6db74"> &gt; /sys/class/gpio/unexport;\
+</span><span style="color:#e6db74">	echo </span><span style="color:#e6db74">${</span>input<span style="color:#e6db74">}</span><span style="color:#e6db74"> &gt; /sys/class/gpio/unexport; exit&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	SIGHUP SIGINT SIGTERM
+</code></pre></div><ul>
+<li><code>trap</code>可以指定在接收到對應<a href="https://en.wikipedia.org/wiki/Signal_(IPC)">訊號</a>時要執行的動作，
+<ul>
+<li>由於後面會用無窮迴圈來讀取按鈕輸入，使用<code>trap</code>可以讓腳本結束時清理中間產生的額外檔案</li>
+</ul>
+</li>
+</ul>
+<hr>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">while</span> true
+<span style="color:#66d9ef">do</span>
+	a<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat /sys/class/gpio/gpio<span style="color:#e6db74">${</span>input<span style="color:#e6db74">}</span>/value<span style="color:#66d9ef">)</span>
+	echo $a | tee /sys/class/gpio/gpio<span style="color:#e6db74">${</span>output<span style="color:#e6db74">}</span>/value
+	sleep 0.3
+<span style="color:#66d9ef">done</span>
+</code></pre></div><ul>
+<li>bash也有提供if, for, while的邏輯控制，因此也可以完成簡單的程式邏輯</li>
+<li><code>X=$(指令)</code>可以將指令執行的結果存到變數裡面</li>
+</ul>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/NCTU_ICT_Embedded_System/lab5/step1/" title="透過MMIO控制週邊裝置"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/NCTU_ICT_Embedded_System/lab5/step3/" title="加入新的LED裝置" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1601984222"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1601984222"></script>
+    
+        
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1601984222"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+
+  </body>
+</html>
+

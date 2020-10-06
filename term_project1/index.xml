@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>期末專題一，無線路由器基礎功能 on 國立交通大學, 嵌入式作業系統設計與實作</title>
+    <link>/NCTU_ICT_Embedded_System/term_project1/</link>
+    <description>Recent content in 期末專題一，無線路由器基礎功能 on 國立交通大學, 嵌入式作業系統設計與實作</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Mon, 05 Oct 2020 13:21:35 +0000</lastBuildDate><atom:link href="/NCTU_ICT_Embedded_System/term_project1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基礎準備</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step1/</link>
+      <pubDate>Mon, 05 Oct 2020 23:34:34 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step1/</guid>
+      <description>有線網路的替代方案 在先前實驗都是由SSH透過有線網路連入樹莓派當中。 由於這次實驗有線網路需要連到其他路由器而非開發的個人電腦， 因此需要透過其他的方式在樹莓派上開發。 以下是幾個可能的作法。
+ 將樹莓派接上鍵盤滑鼠和螢幕 使用UART連結樹莓派和主機  將TTL線的RX接到樹莓派的TX針腳，TTL線的TX接到樹莓派的RX針腳，將接地互接。 在/boot/config.txt加上enable_uart=1 MobaXterm的建立連線方式選擇serial   讓樹莓派和開發主機連在同一個路由器  樹莓派和開發主機會在同一個子網路下，路由器會負責兩者之間的封包傳送    iw  管理無線網路裝置的命令列工具 透過netlink得到在Linux核心內部與網路相關資料結構 透過iw list可以看到樹莓派支援AP(無線網路存取點)的功能   rfkill  啟動和關閉無線裝置的工具(藍芽、無線網路) 使用rfkill list可以看到目前無線裝置是否啟用 使用rfkill unblock 0可以將屏蔽解除  無線存取點的靜態IP  由於其他裝置需要透過透過樹莓派連上網際網路，這些裝置要知道無線存取點的IP 使用 sudo ip addr add 192.168.20.1/24 dev wlan0 可以手動賦予無線網路介面卡靜態IP  這個IP位址和其子網域不能和其他網域重疊，否則在傳遞封包時可能會無法送到正確的網路介面卡    </description>
+    </item>
+    
+    <item>
+      <title>無線網路和路由相關工具</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step2/</link>
+      <pubDate>Tue, 06 Oct 2020 00:11:06 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step2/</guid>
+      <description>hostapd  sudo apt install hostapd 處理無線存取點的加密和認證身份的背景程式 填寫ssid以改變名稱，填寫wpa_passphrase以改變密碼  # wireless interface name interface=wlan0 ssid=&amp;lt;AP&#39;s name you want&amp;gt; # IEEE 802.11g (2.4 GHz) with 7 channels hw_mode=g channel=7 # cipher protocol wpa=2 auth_algs=1 wpa_pairwise=CCMP wpa_key_mgmt=WPA-PSK wpa_passphrase=&amp;lt;password you want&amp;gt; # create hostapd.conf and fill in the above content sudo hostapd hostapd.conf 在執行完上面步驟後，打開手機便可找到與你設定的SSID的存取點。
+在輸入正確密碼後會發現和上圖一樣卡在取得IP位址的地方
+行動裝置選擇靜態IP  上面無法取得IP的原因是因為在手機上預設是用DHCP的方式取得IP 可以選擇使用靜態IP，挑選一個在無線存取點當中尚未被使用的子網域IP(例如 192.168.20.2/24)   獲得了IP後會發現裝置仍然沒有連上網際網路，這是因為樹莓派預設沒有執行封包轉送。
+封包轉送 ip_forward  裝置的封包藉由會送入樹莓派的無線網路介面卡 為了連上網際網路，該封包要能夠透過樹莓派的有線網路介面卡出去 啟動ip_forward來達到這像功能 可以藉由sysctl net.ipv4.ip_forward確認當前ip_forward是否啟動 sudo sysctl net.</description>
+    </item>
+    
+    <item>
+      <title>無線路由器基本功能需求</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step3/</link>
+      <pubDate>Tue, 06 Oct 2020 00:42:31 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step3/</guid>
+      <description>需要實作的無線路由器基本功能  按鈕開關樹莓派的無線存取點功能。 LED燈指示當前無線存取點功能是否開啟。 若當前有封包藉由無線存取點接收則亮燈，反之暗燈。 重新啟動樹莓派後，所有服務需要自動重啟。  Python範例程式 這個期末專題不限定用C，Python，或者Shell Script。 但是如果同學想要使用Python，下方的範例程式可能會有幫助
+import os import psutil # 可以從sysfs讀取wlan0累積讀取的封包大小 with open(&amp;#39;/sys/class/net/wlan0/statistics/rx_bytes&amp;#39;, &amp;#39;r&amp;#39;) as rx: rbytes = int(rx.readline()) # 可以藉由os.system()來執行命令列程式 os.system(&amp;#39;service hostapd start&amp;#39;) os.system(&amp;#39;service hostapd stop&amp;#39;) # 可以藉由psutil來確認hostapd是否執行中 hostapd_running = &amp;#39;hostapd&amp;#39; in (p.name() for p in psutil.process_iter()) 開機後自動啟動服務和設定 對於一般使用者而言，在嵌入式裝置在每次重新開機後手動啟動對應服務和設定是不可能的。 因此需要啟動的背景程式和設定檔必須要紀錄在檔案系統中。 在重新開機之後，初始化的程式透過預設的腳本來將服務一一啟動。
+在不同的Linux發行板可能有不一樣的自動啟動服務方式，以下是在樹莓派上可行的自動啟動服務方式。
+Linux核心模組
+ 若是外部核心模組需要先進行以下步驟  將&amp;lt;模組&amp;gt;.ko複製到/lib/modules/$(uname -r)/目錄底下 depmod指令建立模組的關係圖 可以用modprobe &amp;lt;模組&amp;gt;來確定是否成功   在/etc/modules加入模組名稱  overlays
+ 將指定的&amp;lt;overlay名稱&amp;gt;.dtbo放到/boot/overlays 在/boot/config.txt加入dtoverlay=&amp;lt;overlay名稱&amp;gt;  靜態IP
+ 在/etc/network/interfaces加入以下內容  auto wlan0 iface wlan0 inet static address 192.</description>
+    </item>
+    
+    <item>
+      <title>Demo</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step4/</link>
+      <pubDate>Tue, 06 Oct 2020 06:17:52 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step4/</guid>
+      <description>Demo 實驗當天公佈內容</description>
+    </item>
+    
+  </channel>
+</rss>

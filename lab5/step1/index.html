@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="tw" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.75.1" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/NCTU_ICT_Embedded_System/images/favicon.png" type="image/png">
+
+    <title>透過MMIO控制週邊裝置 :: 國立交通大學, 嵌入式作業系統設計與實作</title>
+
+    
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1601984222" rel="stylesheet">
+    
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1601984222" rel="stylesheet">
+    
+    
+
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1601984222"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-167313793-2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </head>
+  <body class="" data-url="/NCTU_ICT_Embedded_System/lab5/step1/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="/" id="homepage">
+    <b style="color: white;">NCTU-EOSDI</b>
+</a>
+
+<script>
+var postfix =  (document.documentElement.lang == "tw") ? ""  : document.documentElement.lang + "/"
+document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
+</script>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1601984222"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1601984222"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/NCTU_ICT_Embedded_System\/";
+    
+</script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1601984222"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/" title="實驗一，開發環境建置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab1/">
+          實驗一，開發環境建置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step1/" title="安裝樹莓派作業系統" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step1/">
+        安裝樹莓派作業系統
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step2/" title="設定SSH" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step2/">
+        設定SSH
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step3/" title="連線進入樹莓派及樹莓派無線網路設定" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step3/">
+        連線進入樹莓派及樹莓派無線網路設定
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab2/" title="實驗二，智慧家庭—以Python控制周邊裝置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab2/">
+          實驗二，智慧家庭—以Python控制周邊裝置
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab3/" title="實驗三，開發工具鏈準備" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab3/">
+          實驗三，開發工具鏈準備
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab4/" title="實驗四，Linux核心編譯" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab4/">
+          實驗四，Linux核心編譯
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/" title="實驗五，透過Linux核心直接控制週邊裝置" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab5/">
+          實驗五，透過Linux核心直接控制週邊裝置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step1/" title="透過MMIO控制週邊裝置" class="dd-item active">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step1/">
+        透過MMIO控制週邊裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step2/" title="透過sysfs操作GPIO" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step2/">
+        透過sysfs操作GPIO
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step3/" title="加入新的LED裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step3/">
+        加入新的LED裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/" title="實驗六，核心空間GPIO裝置驅動程式" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab6/">
+          實驗六，核心空間GPIO裝置驅動程式
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step1/" title="Linux核心模組" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step1/">
+        Linux核心模組
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step2/" title="平台裝置/驅動程式" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step2/">
+        平台裝置/驅動程式
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step3/" title="GPIO的中斷與sysfs" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step3/">
+        GPIO的中斷與sysfs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/" title="期末專題一，無線路由器基礎功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project1/">
+          期末專題一，無線路由器基礎功能
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step1/" title="基礎準備" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step1/">
+        基礎準備
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step2/" title="無線網路和路由相關工具" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step2/">
+        無線網路和路由相關工具
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step3/" title="無線路由器基本功能需求" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step3/">
+        無線路由器基本功能需求
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project2/" title="期末專題二，無線路由器額外功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project2/">
+          期末專題二，無線路由器額外功能
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="tw" value="/NCTU_ICT_Embedded_System/lab5/step1/" selected>繁體中文</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/NCTU_ICT_Embedded_System/'></a> > <a href='/NCTU_ICT_Embedded_System/lab5/'>實驗五，透過Linux核心直接控制週邊裝置</a> > 透過MMIO控制週邊裝置
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#樹莓派的實體記憶體位址分佈">樹莓派的實體記憶體位址分佈</a></li>
+    <li><a href="#透過虛擬記憶體映射控制週邊裝置">透過虛擬記憶體映射控制週邊裝置</a>
+      <ul>
+        <li><a href="#裝置檔案結合記憶體對映檔案">裝置檔案結合記憶體對映檔案</a></li>
+      </ul>
+    </li>
+    <li><a href="#c範例">C範例</a></li>
+    <li><a href="#討論">討論</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              透過MMIO控制週邊裝置
+            </h1>
+          
+
+        
+
+
+<p>CPU可以透過記憶體位址來讀取寫入記憶體。
+而這些記憶體位址也可以來對應到不同的IO裝置，透過對於特定記憶體位址的讀取寫入，
+使得我們有辦法可以控制多樣的週邊裝置，而這樣控制IO裝置的方法被稱為<a href="https://en.wikipedia.org/wiki/Memory-mapped_I/O">記憶體對映輸入輸出</a>(MMIO)。</p>
+<h2 id="樹莓派的實體記憶體位址分佈">樹莓派的實體記憶體位址分佈</h2>
+<p>每個不同的嵌入式裝置會因為使用的晶片不同而有不同的IO週邊，也會有不同的記憶體位址分布。
+我們可以透過<a href="https://www.kernel.org/doc/html/latest/filesystems/proc.html">procfs</a>底下的<code>iomem</code>來得知當前系統的實體記憶體分佈</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo cat /proc/iomem
+</code></pre></div><pre><code class="language-none" data-lang="none">00000000-3b3fffff : System RAM
+  00008000-00bfffff : Kernel code
+  00d00000-00e7aaf7 : Kernel data
+3f006000-3f006fff : dwc_otg
+3f007000-3f007eff : 3f007000.dma
+3f00a000-3f00a023 : 3f100000.watchdog
+3f00b840-3f00b87b : 3f00b840.mailbox
+3f00b880-3f00b8bf : 3f00b880.mailbox
+3f100000-3f100113 : 3f100000.watchdog
+3f101000-3f102fff : 3f101000.cprman
+3f104000-3f10400f : 3f104000.rng
+3f200000-3f2000b3 : 3f200000.gpio
+3f201000-3f2011ff : serial@7e201000
+  3f201000-3f2011ff : 3f201000.serial
+3f202000-3f2020ff : 3f202000.mmc
+3f212000-3f212007 : 3f212000.thermal
+3f215000-3f215007 : 3f215000.aux
+3f215040-3f21507f : 3f215040.serial
+3f300000-3f3000ff : 3f300000.mmcnr
+3f980000-3f98ffff : dwc_otg
+</code></pre><p>知道了記憶體的整體分佈仍然不足以我們操作週邊裝置。
+以GPIO為例，他的記憶體分佈範圍是3f200000-3f2000b3，但是我們仍然不知道如何改變輸出輸入模式或讀取輸入電壓，
+這時候便需要讀該晶片的<a href="https://cs140e.sergio.bz/docs/BCM2837-ARM-Peripherals.pdf">規格書</a>來得知。
+如果規格書是非公開或者內容不詳盡，則只能參考Linux Kernel的原始碼來得知如何操控裝置。</p>
+<h2 id="透過虛擬記憶體映射控制週邊裝置">透過虛擬記憶體映射控制週邊裝置</h2>
+<p>為了使得各個<a href="https://en.wikipedia.org/wiki/Process_(computing)">行程</a>可以有自己的記憶體空間，使得其執行起來像是獨占整個電腦，作業系統核心透過<a href="https://en.wikipedia.org/wiki/Memory_management_unit">記憶體管理單元</a>使得每個行程活在自己的虛擬記憶體空間之中。
+記憶體管理單元會將虛擬記憶體位址轉換成對應實體的記憶體位址並執行讀取和寫入。</p>
+<p>在Linux中，在行程啟動後會根據執行檔提供資訊做最基本的虛擬記憶體映射(如stack, text區段)。如果要增加新的虛擬記憶體映射則需透過<code>brk</code>或<code>mmap</code>系統呼叫來達成。
+在<code>mmap</code>系統呼叫可以指定使該映射對應到一個檔案，這稱作<a href="https://en.wikipedia.org/wiki/Memory-mapped_file">記憶體對映檔案</a>。</p>
+<p>在Linux中裝置可以作為一個檔案使得程式可以用讀寫一般檔案的方式讀寫裝置，這稱作<a href="https://en.wikipedia.org/wiki/Device_file">裝置檔案</a></p>
+<p>我們將可以結合裝置檔案和記憶體對應檔案來建立<strong>行程的虛擬記憶體位址</strong>映射到<strong>週邊裝置的實體記憶體位址</strong>，以達成透過存取虛擬記憶體位址來控制週邊裝置。</p>
+<h3 id="裝置檔案結合記憶體對映檔案">裝置檔案結合記憶體對映檔案</h3>
+<p>在Linux中，<a href="https://en.wikipedia.org/wiki/Virtual_file_system">虛擬檔案系統</a>允許裝置檔案有自己的開啟讀寫等方法，
+裝置透過註冊自己的<code>struct file_operations</code>可以使得該裝置檔案的存取方式不同於一般檔案。</p>
+<p>在<code>struct file_operations</code>可以修改的方法之一是<code>int (*mmap) (struct file *, struct vm_area_struct *)</code>。
+驅動程式可以透過修改裝置檔案中的<code>mmap</code>方法，使得<code>mmap</code>所建立的虛擬記憶體映射到該裝置所在的實體記憶體區段。</p>
+<p>在使用者執行<code>mmap</code>系統呼叫時，倘若指定參數為對應的裝置檔案，虛擬檔案系統最終會呼叫該裝置檔案的<code>mmap</code>方法，並完成虛擬記憶體的映射。</p>
+<p><em>在樹莓派官方維護的Linux分支中有加入<a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/char/broadcom/bcm2835-gpiomem.c#L104-L121">GPIO的記憶體映射</a>
+的驅動程式，可以透過看程式碼來了解GPIO的記憶體映射是如何建立的。</em></p>
+<h2 id="c範例">C範例</h2>
+<p>在了解了以上原理後，便可以用透過閱讀規格書中GPIO章節的敘述來控制GPIO裝置。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/mman.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// GPIO MMIO
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define SEL (0x00 / 4)
+</span><span style="color:#75715e">#define SET (0x1c / 4)
+</span><span style="color:#75715e">#define CLR (0x28 / 4)
+</span><span style="color:#75715e">#define LEV (0x34 / 4)
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define INPUT 0
+</span><span style="color:#75715e">#define OUTPUT 1
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>gpio;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span>(<span style="color:#66d9ef">int</span> pin, <span style="color:#66d9ef">int</span> mode) {
+  <span style="color:#66d9ef">int</span> set <span style="color:#f92672">=</span> pin <span style="color:#f92672">/</span> <span style="color:#ae81ff">10</span>;
+  <span style="color:#66d9ef">int</span> num <span style="color:#f92672">=</span> pin <span style="color:#f92672">%</span> <span style="color:#ae81ff">10</span>;
+  gpio[SEL <span style="color:#f92672">+</span> set] <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>(<span style="color:#ae81ff">7</span> <span style="color:#f92672">&lt;&lt;</span> (<span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> num));
+  <span style="color:#66d9ef">switch</span> (mode) {
+    <span style="color:#66d9ef">case</span> INPUT:
+      <span style="color:#66d9ef">break</span>;
+    <span style="color:#66d9ef">case</span> OUTPUT:
+      gpio[SEL <span style="color:#f92672">+</span> set] <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> (<span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> num));
+      <span style="color:#66d9ef">break</span>;
+    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+      printf(<span style="color:#e6db74">&#34;Not Supported Mode %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, mode);
+  }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">input</span>(<span style="color:#66d9ef">int</span> pin) {
+  <span style="color:#66d9ef">int</span> set <span style="color:#f92672">=</span> pin <span style="color:#f92672">/</span> <span style="color:#ae81ff">32</span>;
+  <span style="color:#66d9ef">int</span> num <span style="color:#f92672">=</span> pin <span style="color:#f92672">%</span> <span style="color:#ae81ff">32</span>;
+  <span style="color:#66d9ef">return</span> (gpio[LEV <span style="color:#f92672">+</span> set] <span style="color:#f92672">&amp;</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> num)) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">output</span>(<span style="color:#66d9ef">int</span> pin, <span style="color:#66d9ef">int</span> value) {
+  <span style="color:#66d9ef">int</span> set <span style="color:#f92672">=</span> pin <span style="color:#f92672">/</span> <span style="color:#ae81ff">32</span>;
+  <span style="color:#66d9ef">int</span> num <span style="color:#f92672">=</span> pin <span style="color:#f92672">%</span> <span style="color:#ae81ff">32</span>;
+  <span style="color:#66d9ef">if</span> (value <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+    gpio[CLR <span style="color:#f92672">+</span> set] <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> num);
+  } <span style="color:#66d9ef">else</span> {
+    gpio[SET <span style="color:#f92672">+</span> set] <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> num);
+  }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+  <span style="color:#66d9ef">int</span> fd <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/dev/gpiomem&#34;</span>, O_RDWR <span style="color:#f92672">|</span> O_SYNC);
+  <span style="color:#66d9ef">if</span> (fd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+    printf(<span style="color:#e6db74">&#34;open /dev/gpiomem failed</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    exit(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+  }
+  gpio <span style="color:#f92672">=</span> mmap(NULL, <span style="color:#ae81ff">1234</span>, PROT_READ <span style="color:#f92672">|</span> PROT_WRITE, MAP_SHARED, fd, <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">if</span> (gpio <span style="color:#f92672">==</span> MAP_FAILED) {
+    printf(<span style="color:#e6db74">&#34;mmap /dev/gpiomem failed</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    exit(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+  }
+  printf(<span style="color:#e6db74">&#34;virtual address: %p</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, gpio);
+  <span style="color:#66d9ef">int</span> in <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+  <span style="color:#66d9ef">int</span> out <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+  setup(in, INPUT);
+  setup(out, OUTPUT);
+  <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
+    <span style="color:#66d9ef">int</span> tmp <span style="color:#f92672">=</span> input(in);
+    <span style="color:#66d9ef">if</span> (tmp) {
+      output(out, <span style="color:#ae81ff">1</span>);
+    } <span style="color:#66d9ef">else</span> {
+      output(out, <span style="color:#ae81ff">0</span>);
+    }
+    usleep(<span style="color:#ae81ff">100000</span>);
+  }
+}
+</code></pre></div><p>可以注意到上述程式碼中<code>gpio</code>變數帶有額外關鍵字<code>volatile</code>，加入的原因是當按下按鈕時，電位改變會導致讀取該記憶體位址時得到不同的數值。
+但是編譯器不知道這件事情，加入該關鍵字可以讓編譯器不要對該變數做優化而是每次都實際執行讀取記憶體的動作。</p>
+<h2 id="討論">討論</h2>
+<ul>
+<li>Linux本身已經有了<code>/dev/mem</code>裝置檔案來進行實體記憶體的存取，為什麼樹莓派官方還要額外加入<code>/dev/gpiomem</code> ?
+<ul>
+<li><a href="https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/char/mem.c#L373-L414">原始碼</a></li>
+</ul>
+</li>
+</ul>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/NCTU_ICT_Embedded_System/lab5/" title="實驗五，透過Linux核心直接控制週邊裝置"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/NCTU_ICT_Embedded_System/lab5/step2/" title="透過sysfs操作GPIO" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1601984222"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1601984222"></script>
+    
+        
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1601984222"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+
+  </body>
+</html>
+

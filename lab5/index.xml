@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>實驗五，透過Linux核心直接控制週邊裝置 on 國立交通大學, 嵌入式作業系統設計與實作</title>
+    <link>/NCTU_ICT_Embedded_System/lab5/</link>
+    <description>Recent content in 實驗五，透過Linux核心直接控制週邊裝置 on 國立交通大學, 嵌入式作業系統設計與實作</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Mon, 05 Oct 2020 03:48:17 +0000</lastBuildDate><atom:link href="/NCTU_ICT_Embedded_System/lab5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>透過MMIO控制週邊裝置</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step1/</link>
+      <pubDate>Mon, 05 Oct 2020 03:56:32 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step1/</guid>
+      <description>CPU可以透過記憶體位址來讀取寫入記憶體。 而這些記憶體位址也可以來對應到不同的IO裝置，透過對於特定記憶體位址的讀取寫入， 使得我們有辦法可以控制多樣的週邊裝置，而這樣控制IO裝置的方法被稱為記憶體對映輸入輸出(MMIO)。
+樹莓派的實體記憶體位址分佈 每個不同的嵌入式裝置會因為使用的晶片不同而有不同的IO週邊，也會有不同的記憶體位址分布。 我們可以透過procfs底下的iomem來得知當前系統的實體記憶體分佈
+sudo cat /proc/iomem 00000000-3b3fffff : System RAM 00008000-00bfffff : Kernel code 00d00000-00e7aaf7 : Kernel data 3f006000-3f006fff : dwc_otg 3f007000-3f007eff : 3f007000.dma 3f00a000-3f00a023 : 3f100000.watchdog 3f00b840-3f00b87b : 3f00b840.mailbox 3f00b880-3f00b8bf : 3f00b880.mailbox 3f100000-3f100113 : 3f100000.watchdog 3f101000-3f102fff : 3f101000.cprman 3f104000-3f10400f : 3f104000.rng 3f200000-3f2000b3 : 3f200000.gpio 3f201000-3f2011ff : serial@7e201000 3f201000-3f2011ff : 3f201000.serial 3f202000-3f2020ff : 3f202000.mmc 3f212000-3f212007 : 3f212000.thermal 3f215000-3f215007 : 3f215000.aux 3f215040-3f21507f : 3f215040.serial 3f300000-3f3000ff : 3f300000.mmcnr 3f980000-3f98ffff : dwc_otg 知道了記憶體的整體分佈仍然不足以我們操作週邊裝置。 以GPIO為例，他的記憶體分佈範圍是3f200000-3f2000b3，但是我們仍然不知道如何改變輸出輸入模式或讀取輸入電壓， 這時候便需要讀該晶片的規格書來得知。 如果規格書是非公開或者內容不詳盡，則只能參考Linux Kernel的原始碼來得知如何操控裝置。</description>
+    </item>
+    
+    <item>
+      <title>透過sysfs操作GPIO</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step2/</link>
+      <pubDate>Mon, 05 Oct 2020 06:17:02 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step2/</guid>
+      <description>在實驗二時曾經透過載入溫度感測器的驅動程式，然後讀取/sys/目錄底下的檔案來得到感測器的數值。 這是透過Linux中特殊的檔案系統sysfs來完成。
+同樣地，在Linux中的GPIO驅動程式也有結合sysfs，使得一般使用者不用寫程式，透過腳本語言就可以簡單控制GPIO。
+Sysfs 與 GPIO 在sysfs中，驅動程式可以跟sysfs註冊一系列的屬性，這些屬性會以檔案的形式出現在sysfs的目錄下面。 這些屬性通常和裝置和驅動程式的行為緊密結合，使得使用者可以透過改變檔案的內容進而改變驅動程式的參數，最後改變裝置的行為。 而部份簡單的輸入如GPIO也可以透過這些檔案來顯示當前參數或者輸入。
+在Linux核心中，sysfs屬性的註冊已經有既定的框架使得驅動程式的撰寫者可以更容易開發。 所有關於寫入的屬性以*_store的方式命名，而讀取的屬性以*_show的方式命名。 透過ATTR系列的Macro，會將相對應的資料結構一併建立完成。
+以gpio-sysfs為例，讀寫當前GPIO針腳電位的屬性名為value， 可以看到驅動程式只須撰寫與GPIO相關的程式邏輯，而不必寫與sysfs相關的程式邏輯。
+結構化的驅動程式設計 在前一個章節有介紹了週邊裝置的存取要透過MMIO，然而在上面的程式碼中並沒有見到任何與MMIO相關的程式碼。 這個原因是因為不同的嵌入式裝置都有自己的GPIO控制晶片，如果在sysfs相關的程式碼中加入邏輯判斷不同的裝置採用不一樣的記憶體映射會導致程式碼混雜。 在Linux核心中，驅動程式的設計都是有階層結構化的，簡單如GPIO也不例外。
+以GPIO輸入的數值為例，從gpio-sysfs中可以看到數值是透過gpiod_get_value_cansleep得到，這個函式的是在另一份原始碼 gpiolib定義， 繼續往下追蹤可以看到chip-get的函式呼叫。
+這個函式呼叫會找到對應的GPIO晶片並呼叫對應的方法來得到輸入的值， 樹莓派使用的針腳驅動程式 pinctrl-bcm2835會在載入時註冊一系列方法。 因此在一系列的函式呼叫後，最後會呼叫到bcm2835_gpio_rd並讀取GPIO的數值。
+由上面例子可以學到如何以結構化的方式將抽象的行為和實際的硬體操作解藕，在進行實際的驅動程式開發時也能事半功倍。
+Shell Script範例 在了解了以上GPIO和sysfs的基本原理後，可以嘗試用腳本語言來達到控制GPIO的效果
+#!/bin/bash  output=3 input=4 echo $output &amp;gt; /sys/class/gpio/export echo out &amp;gt; /sys/class/gpio/gpio${output}/direction echo $input &amp;gt; /sys/class/gpio/export echo in &amp;gt; /sys/class/gpio/gpio${input}/direction trap &amp;#34;echo ${output}&amp;gt; /sys/class/gpio/unexport;\ echo ${input}&amp;gt; /sys/class/gpio/unexport; exit&amp;#34; \ 	SIGHUP SIGINT SIGTERM while true do a=$(cat /sys/class/gpio/gpio${input}/value) echo $a | tee /sys/class/gpio/gpio${output}/value sleep 0.</description>
+    </item>
+    
+    <item>
+      <title>加入新的LED裝置</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step3/</link>
+      <pubDate>Mon, 05 Oct 2020 06:19:00 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step3/</guid>
+      <description>在前面章節已經學習到了如何透過sysfs直接控制GPIO裝置進而達到控制LED的功能。 Linux核心也有針對GPIO控制的LED燈的驅動程式。 樹梅派的LED驅動程式會透過裝置樹來得知當前有的LED裝置。同學將學習裝置樹是什麼，並嘗試加入新的GPIO LED裝置。
+Sysfs與LED LED裝置可以藉由/sys/class/leds目錄存取。在該目錄下面使用ls會看到已經有其他LED裝置存在。
+每個LED裝置有自己的預設觸發方式。透過cat /sys/class/leds/led0/trigger可以看到所有的觸發方式，而當前選擇的觸發方式會被[]所框住。
+而我們也可以透過寫入字串來改變觸發方式。
+sudo sh -c &amp;#34;echo heartbeat &amp;gt; /sys/class/leds/led0/trigger`` 執行上面指令後便可以看到樹梅派的某個LED燈像心跳一樣定期的開關。
+和GPIO相同，LED雖然是簡單的裝置，由於要相容不一樣的LED裝置(非GPIO,可調整亮度,可調整顏色等)，Linux核心也是以結構化的方式撰寫驅動程式。 相關的原始碼在leds目錄底下。
+裝置樹 簡介 在嵌入式裝置中裝置樹是用來描述該系統中包含CPU、記憶體、中斷晶片和其他週邊裝置的檔案。 除此之外，由於GPIO的針腳可能作為不定用途使用(如LED, UART, SPI&amp;hellip;)，裝置樹可以使用overlays將額外的描述疊加上去而達到客製化針腳用途。
+ 裝置樹的原始碼的副檔名一般為.dts，並可以引入其他裝置樹檔案.dtsi，藉此重複使用相同程式碼。 原始碼需要先透過cpp的C前置處理器，將Macro解開。再來透過dtc指令編譯為Linux核心可以解析的二進制檔案，副檔名一般為.dtb。 .dtb最後會被放在Boot Partition也就是/boot/底下，開機後會由Bootloader載入。 Bootloader在載入裝置檔案前會檢查/boot/config.txt的內容，如果有指定dtoverlay=...或者dtparam=...則會從/boot/overlays底下尋找對應的裝置樹檔案， 並且將參數覆蓋上去。  這份文件不會額外介紹裝置樹的語法，麻煩自行參閱前述文件以及 樹梅派官方裝置樹介紹 來了解如何撰寫裝置樹。
+LED overlays範例 以下範例在leds節點下新增了一個裝置myled，該LED裝置使用GPIO的3號腳位。
+/dts-v1/; /plugin/; / { compatible = &amp;quot;brcm,bcm2835&amp;quot;; fragment@0 { target = &amp;lt;&amp;amp;leds&amp;gt;; __overlay__ { myled { gpios = &amp;lt;&amp;amp;gpio 3 0&amp;gt;; }; }; }; }; 將其儲存為myled.dts後，使用dtc便可轉換為.dtb格式將其放入/boot/overlays目錄下後， 最後在/boot/config.txt加入dtoverlay=myled並重新開機便可看到myled出現在/proc/device-tree/leds和/sys/class/leds目錄之下。
+dtc -I dts -O dtb -o myled.</description>
+    </item>
+    
+    <item>
+      <title>Demo</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step4/</link>
+      <pubDate>Mon, 05 Oct 2020 12:37:30 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step4/</guid>
+      <description>Demo 實驗當天公佈內容</description>
+    </item>
+    
+  </channel>
+</rss>

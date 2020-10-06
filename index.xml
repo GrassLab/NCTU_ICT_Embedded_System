@@ -8,6 +8,45 @@
     <language>zh-tw</language>
     <lastBuildDate>Wed, 23 Sep 2020 15:39:53 +0000</lastBuildDate><atom:link href="/NCTU_ICT_Embedded_System/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>基礎準備</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step1/</link>
+      <pubDate>Mon, 05 Oct 2020 23:34:34 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step1/</guid>
+      <description>有線網路的替代方案 在先前實驗都是由SSH透過有線網路連入樹莓派當中。 由於這次實驗有線網路需要連到其他路由器而非開發的個人電腦， 因此需要透過其他的方式在樹莓派上開發。 以下是幾個可能的作法。
+ 將樹莓派接上鍵盤滑鼠和螢幕 使用UART連結樹莓派和主機  將TTL線的RX接到樹莓派的TX針腳，TTL線的TX接到樹莓派的RX針腳，將接地互接。 在/boot/config.txt加上enable_uart=1 MobaXterm的建立連線方式選擇serial   讓樹莓派和開發主機連在同一個路由器  樹莓派和開發主機會在同一個子網路下，路由器會負責兩者之間的封包傳送    iw  管理無線網路裝置的命令列工具 透過netlink得到在Linux核心內部與網路相關資料結構 透過iw list可以看到樹莓派支援AP(無線網路存取點)的功能   rfkill  啟動和關閉無線裝置的工具(藍芽、無線網路) 使用rfkill list可以看到目前無線裝置是否啟用 使用rfkill unblock 0可以將屏蔽解除  無線存取點的靜態IP  由於其他裝置需要透過透過樹莓派連上網際網路，這些裝置要知道無線存取點的IP 使用 sudo ip addr add 192.168.20.1/24 dev wlan0 可以手動賦予無線網路介面卡靜態IP  這個IP位址和其子網域不能和其他網域重疊，否則在傳遞封包時可能會無法送到正確的網路介面卡    </description>
+    </item>
+    
+    <item>
+      <title>Linux核心模組</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step1/</link>
+      <pubDate>Mon, 05 Oct 2020 13:41:02 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step1/</guid>
+      <description>Linux提供動態載入移除核心模組的功能，使得記憶體不會被沒有使用到的模組佔據。 大部分的驅動程式都是透過Linux核心模組在開機時或開機後動態載入核心空間中。
+這個章節會教導如何寫和編譯最基礎的核心模組，使同學了解在核心空間的程式是如何運行的。
+編譯核心模組 下載Linux核心標頭檔 這次實驗會直接在樹莓派上面進行編譯核心模組的工作，因此要先下載對應的標頭檔。 不同的Linux核心版本使用的標頭檔可能會不一樣，而Raspberry Pi OS (32-bit)使用的版本可以透過以下指令下載。
+sudo apt install raspberrypi-kernel-headers 核心模組基礎程式碼 Linux的核心模組需要透過module_init和module_exit註冊載入時的初始函式和移除時的卸載函式。
+而核心模組一般而言要透過MODULE_LICENSE指定使用的軟體授權條款， 而Linux核心本身是GPL條款。 在載入核心模組時會檢查該模組的條款，如果使用的條款不是GPL相容的條款，將會無法呼叫部分Linux核心提供的函式。
+以上用到的Macro可以藉由&amp;lt;linux/module.h&amp;gt;引入。
+#include &amp;lt;linux/module.h&amp;gt; MODULE_LICENSE(&amp;#34;GPL&amp;#34;); int mymodule_init(void) { printk(&amp;#34;My Module INIT\n&amp;#34;); return 0; } void mymodule_exit(void) { printk(&amp;#34;My Module EXIT\n&amp;#34;); } module_init(mymodule_init); module_exit(mymodule_exit); 核心模組Makefile Linux核心模組在編譯過程涉及許多步驟，編譯時也要加上許多編譯選項。 可以透過make -C指定Linux核心所在目錄，並使用其提供的Makefile。
+在核心模組的Makefile需要透過obj-m標明要編譯的模組，該模組所需要用到的原始碼可以用*-objs 來指定。 接下來透過M=...指定模組原始碼的路徑後，將編譯目標設為modules即可編譯出*.ko模組。
+clean可以清除編譯產生的檔案
+obj-m += mymodule.o mymodule-objs := main.o modules: make -C /lib/modules/${shell uname -r}/build M=${PWD} modules clean: make -C /lib/modules/${shell uname -r}/build M=${PWD} clean 編譯上述範例 mkdir lab6 cd lab6 # create main.</description>
+    </item>
+    
+    <item>
+      <title>透過MMIO控制週邊裝置</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step1/</link>
+      <pubDate>Mon, 05 Oct 2020 03:56:32 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step1/</guid>
+      <description>CPU可以透過記憶體位址來讀取寫入記憶體。 而這些記憶體位址也可以來對應到不同的IO裝置，透過對於特定記憶體位址的讀取寫入， 使得我們有辦法可以控制多樣的週邊裝置，而這樣控制IO裝置的方法被稱為記憶體對映輸入輸出(MMIO)。
+樹莓派的實體記憶體位址分佈 每個不同的嵌入式裝置會因為使用的晶片不同而有不同的IO週邊，也會有不同的記憶體位址分布。 我們可以透過procfs底下的iomem來得知當前系統的實體記憶體分佈
+sudo cat /proc/iomem 00000000-3b3fffff : System RAM 00008000-00bfffff : Kernel code 00d00000-00e7aaf7 : Kernel data 3f006000-3f006fff : dwc_otg 3f007000-3f007eff : 3f007000.dma 3f00a000-3f00a023 : 3f100000.watchdog 3f00b840-3f00b87b : 3f00b840.mailbox 3f00b880-3f00b8bf : 3f00b880.mailbox 3f100000-3f100113 : 3f100000.watchdog 3f101000-3f102fff : 3f101000.cprman 3f104000-3f10400f : 3f104000.rng 3f200000-3f2000b3 : 3f200000.gpio 3f201000-3f2011ff : serial@7e201000 3f201000-3f2011ff : 3f201000.serial 3f202000-3f2020ff : 3f202000.mmc 3f212000-3f212007 : 3f212000.thermal 3f215000-3f215007 : 3f215000.aux 3f215040-3f21507f : 3f215040.serial 3f300000-3f3000ff : 3f300000.mmcnr 3f980000-3f98ffff : dwc_otg 知道了記憶體的整體分佈仍然不足以我們操作週邊裝置。 以GPIO為例，他的記憶體分佈範圍是3f200000-3f2000b3，但是我們仍然不知道如何改變輸出輸入模式或讀取輸入電壓， 這時候便需要讀該晶片的規格書來得知。 如果規格書是非公開或者內容不詳盡，則只能參考Linux Kernel的原始碼來得知如何操控裝置。</description>
+    </item>
+    
+    <item>
       <title>安裝樹莓派作業系統</title>
       <link>/NCTU_ICT_Embedded_System/lab1/step1/</link>
       <pubDate>Wed, 23 Sep 2020 15:53:09 +0000</pubDate>
@@ -21,6 +60,48 @@ Boot Partition 顧名思義為放置Linux開機所需相關檔案，包含Linux�
 Boot Partition檔案
 開機流程
 Root Partition 該分割區放置的剩餘Linux作業系統所需的所有檔案。 該分區的檔案系統為Ext4，是Linux的檔案系統。 在Windows上讀取會需要額外的工具，這部分會在下一部份說明。</description>
+    </item>
+    
+    <item>
+      <title>無線網路和路由相關工具</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step2/</link>
+      <pubDate>Tue, 06 Oct 2020 00:11:06 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step2/</guid>
+      <description>hostapd  sudo apt install hostapd 處理無線存取點的加密和認證身份的背景程式 填寫ssid以改變名稱，填寫wpa_passphrase以改變密碼  # wireless interface name interface=wlan0 ssid=&amp;lt;AP&#39;s name you want&amp;gt; # IEEE 802.11g (2.4 GHz) with 7 channels hw_mode=g channel=7 # cipher protocol wpa=2 auth_algs=1 wpa_pairwise=CCMP wpa_key_mgmt=WPA-PSK wpa_passphrase=&amp;lt;password you want&amp;gt; # create hostapd.conf and fill in the above content sudo hostapd hostapd.conf 在執行完上面步驟後，打開手機便可找到與你設定的SSID的存取點。
+在輸入正確密碼後會發現和上圖一樣卡在取得IP位址的地方
+行動裝置選擇靜態IP  上面無法取得IP的原因是因為在手機上預設是用DHCP的方式取得IP 可以選擇使用靜態IP，挑選一個在無線存取點當中尚未被使用的子網域IP(例如 192.168.20.2/24)   獲得了IP後會發現裝置仍然沒有連上網際網路，這是因為樹莓派預設沒有執行封包轉送。
+封包轉送 ip_forward  裝置的封包藉由會送入樹莓派的無線網路介面卡 為了連上網際網路，該封包要能夠透過樹莓派的有線網路介面卡出去 啟動ip_forward來達到這像功能 可以藉由sysctl net.ipv4.ip_forward確認當前ip_forward是否啟動 sudo sysctl net.</description>
+    </item>
+    
+    <item>
+      <title>平台裝置/驅動程式</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step2/</link>
+      <pubDate>Mon, 05 Oct 2020 14:58:35 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step2/</guid>
+      <description>所有的周邊裝置都是藉由匯流排來連接， 某些裝置在在載入時可以主動通知Linux核心，此時Linux核心可以載入對應的驅動程式。 然而在嵌入式系統中，大部分的裝置都無法透過像這樣的方式讓Linux核心枚舉出現在載入的裝置。
+這種無法主動被Linux核心發現的裝置稱為平台裝置， 平台裝置通常是透過實驗五提過的裝置樹在開機時載入，而Linux核心提供了平台裝置驅動程式的框架來統一並加速相關驅動程式的開發。
+平台驅動程式範例 #include &amp;lt;linux/module.h&amp;gt; #include &amp;lt;linux/of.h&amp;gt; #include &amp;lt;linux/platform_device.h&amp;gt; MODULE_LICENSE(&amp;quot;GPL&amp;quot;); struct of_device_id mymodule_dt[] = { { .compatible = &amp;quot;mymodule&amp;quot;, }, {}, }; int mymodule_probe(struct platform_device *pdev) { printk(&amp;quot;mymodule PROBE\n&amp;quot;); return 0; } int mymodule_remove(struct platform_device *pdev) { printk(&amp;quot;mymodule REMOVE\n&amp;quot;); return 0; } struct platform_driver mymodule = { .probe = mymodule_probe, .remove = mymodule_remove, .driver = { .name = &amp;quot;mymodule&amp;quot;, .of_match_table = of_match_ptr(mymodule_dt), .owner = THIS_MODULE, }, }; module_platform_driver(mymodule); 和前面介紹過的核心模組不同，這這份程式碼中並沒有看到module_init和module_exit，取而代之的是probe和remove函式。 但是如果往下追蹤module_platform_driver這個註冊平台驅動程式的Macro會發現module_init和module_exit是被包裝在裡面的。</description>
+    </item>
+    
+    <item>
+      <title>透過sysfs操作GPIO</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step2/</link>
+      <pubDate>Mon, 05 Oct 2020 06:17:02 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step2/</guid>
+      <description>在實驗二時曾經透過載入溫度感測器的驅動程式，然後讀取/sys/目錄底下的檔案來得到感測器的數值。 這是透過Linux中特殊的檔案系統sysfs來完成。
+同樣地，在Linux中的GPIO驅動程式也有結合sysfs，使得一般使用者不用寫程式，透過腳本語言就可以簡單控制GPIO。
+Sysfs 與 GPIO 在sysfs中，驅動程式可以跟sysfs註冊一系列的屬性，這些屬性會以檔案的形式出現在sysfs的目錄下面。 這些屬性通常和裝置和驅動程式的行為緊密結合，使得使用者可以透過改變檔案的內容進而改變驅動程式的參數，最後改變裝置的行為。 而部份簡單的輸入如GPIO也可以透過這些檔案來顯示當前參數或者輸入。
+在Linux核心中，sysfs屬性的註冊已經有既定的框架使得驅動程式的撰寫者可以更容易開發。 所有關於寫入的屬性以*_store的方式命名，而讀取的屬性以*_show的方式命名。 透過ATTR系列的Macro，會將相對應的資料結構一併建立完成。
+以gpio-sysfs為例，讀寫當前GPIO針腳電位的屬性名為value， 可以看到驅動程式只須撰寫與GPIO相關的程式邏輯，而不必寫與sysfs相關的程式邏輯。
+結構化的驅動程式設計 在前一個章節有介紹了週邊裝置的存取要透過MMIO，然而在上面的程式碼中並沒有見到任何與MMIO相關的程式碼。 這個原因是因為不同的嵌入式裝置都有自己的GPIO控制晶片，如果在sysfs相關的程式碼中加入邏輯判斷不同的裝置採用不一樣的記憶體映射會導致程式碼混雜。 在Linux核心中，驅動程式的設計都是有階層結構化的，簡單如GPIO也不例外。
+以GPIO輸入的數值為例，從gpio-sysfs中可以看到數值是透過gpiod_get_value_cansleep得到，這個函式的是在另一份原始碼 gpiolib定義， 繼續往下追蹤可以看到chip-get的函式呼叫。
+這個函式呼叫會找到對應的GPIO晶片並呼叫對應的方法來得到輸入的值， 樹莓派使用的針腳驅動程式 pinctrl-bcm2835會在載入時註冊一系列方法。 因此在一系列的函式呼叫後，最後會呼叫到bcm2835_gpio_rd並讀取GPIO的數值。
+由上面例子可以學到如何以結構化的方式將抽象的行為和實際的硬體操作解藕，在進行實際的驅動程式開發時也能事半功倍。
+Shell Script範例 在了解了以上GPIO和sysfs的基本原理後，可以嘗試用腳本語言來達到控制GPIO的效果
+#!/bin/bash  output=3 input=4 echo $output &amp;gt; /sys/class/gpio/export echo out &amp;gt; /sys/class/gpio/gpio${output}/direction echo $input &amp;gt; /sys/class/gpio/export echo in &amp;gt; /sys/class/gpio/gpio${input}/direction trap &amp;#34;echo ${output}&amp;gt; /sys/class/gpio/unexport;\ echo ${input}&amp;gt; /sys/class/gpio/unexport; exit&amp;#34; \ 	SIGHUP SIGINT SIGTERM while true do a=$(cat /sys/class/gpio/gpio${input}/value) echo $a | tee /sys/class/gpio/gpio${output}/value sleep 0.</description>
     </item>
     
     <item>
@@ -42,6 +123,53 @@ interface eth0 static ip_address=192.168.1.2/24 完成後如下圖即可 Windows
     </item>
     
     <item>
+      <title>GPIO的中斷與sysfs</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step3/</link>
+      <pubDate>Tue, 06 Oct 2020 07:31:19 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step3/</guid>
+      <description>在前面章節在前面章節簡單的介紹了平台裝置，以及如何透過Linux本身GPIO函式庫進行GPIO操作。 這個章節會介紹如果透過中斷來降低按鈕電位改變至LED的電位連帶改變的延遲。 並且介紹如何將mydevice註冊到sysfs
+中斷 CPU可以接收來自周邊裝置的硬體中斷，並在接收到中斷時才存取周邊裝置的資料。 如此一來驅動程式不需要透過輪詢持續的存取周邊裝置。
+透過Linux核心GPIO函式庫中的gpiod_to_irq可以直接拿到一個中斷號碼，中斷號碼可以再透過request_irq來註冊中斷處理函式。
+在註冊中斷處理函式時可以指定中斷的觸發方式，藉此可以達到按下按鈕和放開時都觸發該函式達到開關LED的效果。
+#include &amp;lt;linux/gpio/consumer.h&amp;gt;#include &amp;lt;linux/interrupt.h&amp;gt;#include &amp;lt;linux/module.h&amp;gt;#include &amp;lt;linux/of.h&amp;gt;#include &amp;lt;linux/platform_device.h&amp;gt; MODULE_LICENSE(&amp;#34;GPL&amp;#34;); struct of_device_id mymodule_dt[] = { { .compatible = &amp;#34;mymodule&amp;#34;, }, {}, }; int irq; struct gpio_desc* led; struct gpio_desc* btn; irqreturn_t btn_irq_handler(int irq, void* dev) { int state = gpiod_get_value(btn); gpiod_set_value(led, state); return IRQ_HANDLED; } static int mymodule_probe(struct platform_device* pdev) { struct device* dev = &amp;amp;pdev-&amp;gt;dev; int retVal; led = gpiod_get_index(dev, &amp;#34;led&amp;#34;, 0, GPIOD_OUT_LOW); btn = gpiod_get_index(dev, &amp;#34;btn&amp;#34;, 0, GPIOD_IN); irq = gpiod_to_irq(btn); retVal = request_irq(irq, btn_irq_handler, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, &amp;#34;btn_irq_handler&amp;#34;, NULL); printk(&amp;#34;mymodule PROBE, requested irq %d\n&amp;#34;, retVal); return 0; } static int mymodule_remove(struct platform_device* pdev) { free_irq(irq, NULL); gpiod_put(btn); gpiod_put(led); printk(&amp;#34;mymodule REMOVE\n&amp;#34;); return 0; } static struct platform_driver mymodule = { .</description>
+    </item>
+    
+    <item>
+      <title>無線路由器基本功能需求</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step3/</link>
+      <pubDate>Tue, 06 Oct 2020 00:42:31 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step3/</guid>
+      <description>需要實作的無線路由器基本功能  按鈕開關樹莓派的無線存取點功能。 LED燈指示當前無線存取點功能是否開啟。 若當前有封包藉由無線存取點接收則亮燈，反之暗燈。 重新啟動樹莓派後，所有服務需要自動重啟。  Python範例程式 這個期末專題不限定用C，Python，或者Shell Script。 但是如果同學想要使用Python，下方的範例程式可能會有幫助
+import os import psutil # 可以從sysfs讀取wlan0累積讀取的封包大小 with open(&amp;#39;/sys/class/net/wlan0/statistics/rx_bytes&amp;#39;, &amp;#39;r&amp;#39;) as rx: rbytes = int(rx.readline()) # 可以藉由os.system()來執行命令列程式 os.system(&amp;#39;service hostapd start&amp;#39;) os.system(&amp;#39;service hostapd stop&amp;#39;) # 可以藉由psutil來確認hostapd是否執行中 hostapd_running = &amp;#39;hostapd&amp;#39; in (p.name() for p in psutil.process_iter()) 開機後自動啟動服務和設定 對於一般使用者而言，在嵌入式裝置在每次重新開機後手動啟動對應服務和設定是不可能的。 因此需要啟動的背景程式和設定檔必須要紀錄在檔案系統中。 在重新開機之後，初始化的程式透過預設的腳本來將服務一一啟動。
+在不同的Linux發行板可能有不一樣的自動啟動服務方式，以下是在樹莓派上可行的自動啟動服務方式。
+Linux核心模組
+ 若是外部核心模組需要先進行以下步驟  將&amp;lt;模組&amp;gt;.ko複製到/lib/modules/$(uname -r)/目錄底下 depmod指令建立模組的關係圖 可以用modprobe &amp;lt;模組&amp;gt;來確定是否成功   在/etc/modules加入模組名稱  overlays
+ 將指定的&amp;lt;overlay名稱&amp;gt;.dtbo放到/boot/overlays 在/boot/config.txt加入dtoverlay=&amp;lt;overlay名稱&amp;gt;  靜態IP
+ 在/etc/network/interfaces加入以下內容  auto wlan0 iface wlan0 inet static address 192.</description>
+    </item>
+    
+    <item>
+      <title>加入新的LED裝置</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step3/</link>
+      <pubDate>Mon, 05 Oct 2020 06:19:00 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step3/</guid>
+      <description>在前面章節已經學習到了如何透過sysfs直接控制GPIO裝置進而達到控制LED的功能。 Linux核心也有針對GPIO控制的LED燈的驅動程式。 樹梅派的LED驅動程式會透過裝置樹來得知當前有的LED裝置。同學將學習裝置樹是什麼，並嘗試加入新的GPIO LED裝置。
+Sysfs與LED LED裝置可以藉由/sys/class/leds目錄存取。在該目錄下面使用ls會看到已經有其他LED裝置存在。
+每個LED裝置有自己的預設觸發方式。透過cat /sys/class/leds/led0/trigger可以看到所有的觸發方式，而當前選擇的觸發方式會被[]所框住。
+而我們也可以透過寫入字串來改變觸發方式。
+sudo sh -c &amp;#34;echo heartbeat &amp;gt; /sys/class/leds/led0/trigger`` 執行上面指令後便可以看到樹梅派的某個LED燈像心跳一樣定期的開關。
+和GPIO相同，LED雖然是簡單的裝置，由於要相容不一樣的LED裝置(非GPIO,可調整亮度,可調整顏色等)，Linux核心也是以結構化的方式撰寫驅動程式。 相關的原始碼在leds目錄底下。
+裝置樹 簡介 在嵌入式裝置中裝置樹是用來描述該系統中包含CPU、記憶體、中斷晶片和其他週邊裝置的檔案。 除此之外，由於GPIO的針腳可能作為不定用途使用(如LED, UART, SPI&amp;hellip;)，裝置樹可以使用overlays將額外的描述疊加上去而達到客製化針腳用途。
+ 裝置樹的原始碼的副檔名一般為.dts，並可以引入其他裝置樹檔案.dtsi，藉此重複使用相同程式碼。 原始碼需要先透過cpp的C前置處理器，將Macro解開。再來透過dtc指令編譯為Linux核心可以解析的二進制檔案，副檔名一般為.dtb。 .dtb最後會被放在Boot Partition也就是/boot/底下，開機後會由Bootloader載入。 Bootloader在載入裝置檔案前會檢查/boot/config.txt的內容，如果有指定dtoverlay=...或者dtparam=...則會從/boot/overlays底下尋找對應的裝置樹檔案， 並且將參數覆蓋上去。  這份文件不會額外介紹裝置樹的語法，麻煩自行參閱前述文件以及 樹梅派官方裝置樹介紹 來了解如何撰寫裝置樹。
+LED overlays範例 以下範例在leds節點下新增了一個裝置myled，該LED裝置使用GPIO的3號腳位。
+/dts-v1/; /plugin/; / { compatible = &amp;quot;brcm,bcm2835&amp;quot;; fragment@0 { target = &amp;lt;&amp;amp;leds&amp;gt;; __overlay__ { myled { gpios = &amp;lt;&amp;amp;gpio 3 0&amp;gt;; }; }; }; }; 將其儲存為myled.dts後，使用dtc便可轉換為.dtb格式將其放入/boot/overlays目錄下後， 最後在/boot/config.txt加入dtoverlay=myled並重新開機便可看到myled出現在/proc/device-tree/leds和/sys/class/leds目錄之下。
+dtc -I dts -O dtb -o myled.</description>
+    </item>
+    
+    <item>
       <title>連線進入樹莓派及樹莓派無線網路設定</title>
       <link>/NCTU_ICT_Embedded_System/lab1/step3/</link>
       <pubDate>Wed, 30 Sep 2020 03:14:59 +0000</pubDate>
@@ -53,6 +181,33 @@ MobaXterm MobaXterm 是在Windows上一個十分便利終端機程式。 他可�
 建立SSH連線  點選【Session】&amp;gt; 【SSH】 再Remote Host 輸入「192.168.1.2」 點選【Specify username】 再username欄位輸入pi 點擊 OK 輸入密碼raspberry 即可看到登入進樹莓派中  無線網路設定 由於開發主機和樹莓派之間的網路連線只是區域網路， 在沒有設定開發主機的封包轉發和NAT的狀況下，樹莓派是無法連至外部網路的。
 之後的實驗需要連線至網際網路的能力，這邊可以透過無線網路來達成。
 步驟  在終端機中輸入sudo raspi-config 選擇【Network Options】&amp;gt;【Wireless LAN】  輸入無線網路的 SSID 輸入無線網路的密碼 選擇【Finish】 使用 ping 指令確認是否連上網際網路  ping -c4 google.com     </description>
+    </item>
+    
+    <item>
+      <title>Demo</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step4/</link>
+      <pubDate>Tue, 06 Oct 2020 07:31:19 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step4/</guid>
+      <description>Demo 實驗當天公佈內容</description>
+    </item>
+    
+    <item>
+      <title>Demo</title>
+      <link>/NCTU_ICT_Embedded_System/term_project1/step4/</link>
+      <pubDate>Tue, 06 Oct 2020 06:17:52 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/term_project1/step4/</guid>
+      <description>Demo 實驗當天公佈內容</description>
+    </item>
+    
+    <item>
+      <title>Demo</title>
+      <link>/NCTU_ICT_Embedded_System/lab5/step4/</link>
+      <pubDate>Mon, 05 Oct 2020 12:37:30 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab5/step4/</guid>
+      <description>Demo 實驗當天公佈內容</description>
     </item>
     
     <item>

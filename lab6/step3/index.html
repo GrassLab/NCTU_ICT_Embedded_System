@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="tw" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.75.1" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/NCTU_ICT_Embedded_System/images/favicon.png" type="image/png">
+
+    <title>GPIO的中斷與sysfs :: 國立交通大學, 嵌入式作業系統設計與實作</title>
+
+    
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1601984222" rel="stylesheet">
+    
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1601984222" rel="stylesheet">
+    
+    
+
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1601984222"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-167313793-2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </head>
+  <body class="" data-url="/NCTU_ICT_Embedded_System/lab6/step3/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="/" id="homepage">
+    <b style="color: white;">NCTU-EOSDI</b>
+</a>
+
+<script>
+var postfix =  (document.documentElement.lang == "tw") ? ""  : document.documentElement.lang + "/"
+document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
+</script>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1601984222"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1601984222"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/NCTU_ICT_Embedded_System\/";
+    
+</script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1601984222"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/" title="實驗一，開發環境建置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab1/">
+          實驗一，開發環境建置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step1/" title="安裝樹莓派作業系統" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step1/">
+        安裝樹莓派作業系統
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step2/" title="設定SSH" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step2/">
+        設定SSH
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step3/" title="連線進入樹莓派及樹莓派無線網路設定" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step3/">
+        連線進入樹莓派及樹莓派無線網路設定
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab2/" title="實驗二，智慧家庭—以Python控制周邊裝置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab2/">
+          實驗二，智慧家庭—以Python控制周邊裝置
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab3/" title="實驗三，開發工具鏈準備" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab3/">
+          實驗三，開發工具鏈準備
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab4/" title="實驗四，Linux核心編譯" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab4/">
+          實驗四，Linux核心編譯
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/" title="實驗五，透過Linux核心直接控制週邊裝置" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab5/">
+          實驗五，透過Linux核心直接控制週邊裝置
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step1/" title="透過MMIO控制週邊裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step1/">
+        透過MMIO控制週邊裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step2/" title="透過sysfs操作GPIO" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step2/">
+        透過sysfs操作GPIO
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step3/" title="加入新的LED裝置" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step3/">
+        加入新的LED裝置
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab5/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab5/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/" title="實驗六，核心空間GPIO裝置驅動程式" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/lab6/">
+          實驗六，核心空間GPIO裝置驅動程式
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step1/" title="Linux核心模組" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step1/">
+        Linux核心模組
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step2/" title="平台裝置/驅動程式" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step2/">
+        平台裝置/驅動程式
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step3/" title="GPIO的中斷與sysfs" class="dd-item active">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step3/">
+        GPIO的中斷與sysfs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/lab6/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/lab6/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/" title="期末專題一，無線路由器基礎功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project1/">
+          期末專題一，無線路由器基礎功能
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step1/" title="基礎準備" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step1/">
+        基礎準備
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step2/" title="無線網路和路由相關工具" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step2/">
+        無線網路和路由相關工具
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step3/" title="無線路由器基本功能需求" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step3/">
+        無線路由器基本功能需求
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/NCTU_ICT_Embedded_System/term_project1/step4/" title="Demo" class="dd-item ">
+        <a href="/NCTU_ICT_Embedded_System/term_project1/step4/">
+        Demo
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/NCTU_ICT_Embedded_System/term_project2/" title="期末專題二，無線路由器額外功能" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/NCTU_ICT_Embedded_System/term_project2/">
+          期末專題二，無線路由器額外功能
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="tw" value="/NCTU_ICT_Embedded_System/lab6/step3/" selected>繁體中文</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/NCTU_ICT_Embedded_System/'></a> > <a href='/NCTU_ICT_Embedded_System/lab6/'>實驗六，核心空間GPIO裝置驅動程式</a> > GPIO的中斷與sysfs
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#中斷">中斷</a></li>
+    <li><a href="#sysfs">Sysfs</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              GPIO的中斷與sysfs
+            </h1>
+          
+
+        
+
+
+<p>在前面章節在前面章節簡單的介紹了平台裝置，以及如何透過Linux本身GPIO函式庫進行GPIO操作。
+這個章節會介紹如果透過中斷來降低按鈕電位改變至LED的電位連帶改變的延遲。
+並且介紹如何將<code>mydevice</code>註冊到<code>sysfs</code></p>
+<h2 id="中斷">中斷</h2>
+<p>CPU可以接收來自周邊裝置的硬體<a href="https://en.wikipedia.org/wiki/Interrupt">中斷</a>，並在接收到中斷時才存取周邊裝置的資料。
+如此一來驅動程式不需要透過<a href="https://en.wikipedia.org/wiki/Polling_(computer_science)">輪詢</a>持續的存取周邊裝置。</p>
+<p>透過Linux核心GPIO函式庫中的<code>gpiod_to_irq</code>可以直接拿到一個中斷號碼，中斷號碼可以再透過<code>request_irq</code>來註冊中斷處理函式。</p>
+<p>在註冊中斷處理函式時可以指定中斷的觸發方式，藉此可以達到按下按鈕和放開時都觸發該函式達到開關LED的效果。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/gpio/consumer.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/interrupt.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/module.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/of.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/platform_device.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+MODULE_LICENSE(<span style="color:#e6db74">&#34;GPL&#34;</span>);
+
+<span style="color:#66d9ef">struct</span> of_device_id mymodule_dt[] <span style="color:#f92672">=</span> {
+    {
+        .compatible <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mymodule&#34;</span>,
+    },
+    {},
+};
+
+<span style="color:#66d9ef">int</span> irq;
+<span style="color:#66d9ef">struct</span> gpio_desc<span style="color:#f92672">*</span> led;
+<span style="color:#66d9ef">struct</span> gpio_desc<span style="color:#f92672">*</span> btn;
+
+irqreturn_t <span style="color:#a6e22e">btn_irq_handler</span>(<span style="color:#66d9ef">int</span> irq, <span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> dev) {
+  <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> gpiod_get_value(btn);
+  gpiod_set_value(led, state);
+  <span style="color:#66d9ef">return</span> IRQ_HANDLED;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mymodule_probe</span>(<span style="color:#66d9ef">struct</span> platform_device<span style="color:#f92672">*</span> pdev) {
+  <span style="color:#66d9ef">struct</span> device<span style="color:#f92672">*</span> dev <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pdev<span style="color:#f92672">-&gt;</span>dev;
+  <span style="color:#66d9ef">int</span> retVal;
+  led <span style="color:#f92672">=</span> gpiod_get_index(dev, <span style="color:#e6db74">&#34;led&#34;</span>, <span style="color:#ae81ff">0</span>, GPIOD_OUT_LOW);
+  btn <span style="color:#f92672">=</span> gpiod_get_index(dev, <span style="color:#e6db74">&#34;btn&#34;</span>, <span style="color:#ae81ff">0</span>, GPIOD_IN);
+  irq <span style="color:#f92672">=</span> gpiod_to_irq(btn);
+  retVal <span style="color:#f92672">=</span> request_irq(irq, btn_irq_handler,
+                       IRQF_TRIGGER_RISING <span style="color:#f92672">|</span> IRQF_TRIGGER_FALLING,
+                       <span style="color:#e6db74">&#34;btn_irq_handler&#34;</span>, NULL);
+  printk(<span style="color:#e6db74">&#34;mymodule PROBE, requested irq %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, retVal);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mymodule_remove</span>(<span style="color:#66d9ef">struct</span> platform_device<span style="color:#f92672">*</span> pdev) {
+  free_irq(irq, NULL);
+  gpiod_put(btn);
+  gpiod_put(led);
+  printk(<span style="color:#e6db74">&#34;mymodule REMOVE</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> platform_driver mymodule <span style="color:#f92672">=</span> {
+    .probe <span style="color:#f92672">=</span> mymodule_probe,
+    .remove <span style="color:#f92672">=</span> mymodule_remove,
+    .driver <span style="color:#f92672">=</span>
+        {
+            .name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mymodule&#34;</span>,
+            .of_match_table <span style="color:#f92672">=</span> of_match_ptr(mymodule_dt),
+            .owner <span style="color:#f92672">=</span> THIS_MODULE,
+        },
+};
+module_platform_driver(mymodule);
+</code></pre></div><ul>
+<li>
+<p>在使用中斷後可能會發現按鈕變得很敏感，這是因為按按鈕的時候訊號是會抖動的。
+而由於這邊使用的中斷觸發是根據訊號邊緣變化，因此會導致重複觸發。
+這時候需要透過一些硬體手法(如電容)或者軟體手法(等待一小段時間)來去除開關彈跳帶來的訊號不穩現象。</p>
+</li>
+<li>
+<p>雖然以上程式碼看起來很簡單，然而作業系統核心在處理中斷時由於當下狀態不屬於任何行程，因此有部分操作是禁止的。
+而Linux核心針對中斷處理也有引入許多額外的軟體機制來幫助驅動程式開發者可以針對不同情形選用不一樣方式處理中斷。
+礙於篇幅緣故，在這份文件中不會多做介紹，同學可以從其他書籍和既有的驅動程式原始碼來學習如何寫出更好的中斷處理函式。</p>
+</li>
+</ul>
+<h2 id="sysfs">Sysfs</h2>
+<p>我們在實驗五時已經知道，Linux核心提供了sysfs的框架讓裝置可以註冊自己的屬性。
+同時也看了LED和GPIO的驅動程式是如何使用這些機制。</p>
+<p>在下方程式碼中，<code>mymodule</code>會透過<code>device_create_file</code>將新載入的裝置引入兩個屬性<code>button_pushed</code>和<code>ledon</code>。</p>
+<ul>
+<li>透過<code>DEVICE_ATTR</code>Macro可以產生<code>dev_attr_*</code>的資料結構並對應上<code>*_show</code>或<code>*_store</code>的處理函式。</li>
+<li>將裝置和屬性作為參數傳入<code>device_create_file</code>後，sysfs便會在裝置和驅動程式綁定後產生對應的屬性檔案。</li>
+<li><code>*_show</code>相關的函式，可以透過<code>sprintf</code>將內容印到sysfs提供的空間，這些內容最終會被使用者以<code>read</code>系統呼叫取得。</li>
+<li><code>*_store</code>相關的函式，可以透過<code>kstrtoul</code>或者<code>sscanf</code>來將字串轉成驅動程式內部資料結構的格式，並且可以對該裝置做額外的操作。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/gpio/consumer.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/module.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/of.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/platform_device.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/sysfs.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+MODULE_LICENSE(<span style="color:#e6db74">&#34;GPL&#34;</span>);
+
+<span style="color:#66d9ef">struct</span> of_device_id mymodule_dt[] <span style="color:#f92672">=</span> {
+    {
+        .compatible <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mymodule&#34;</span>,
+    },
+    {},
+};
+
+<span style="color:#66d9ef">struct</span> gpio_desc <span style="color:#f92672">*</span>led;
+<span style="color:#66d9ef">struct</span> gpio_desc <span style="color:#f92672">*</span>btn;
+<span style="color:#66d9ef">int</span> is_blink <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+ssize_t <span style="color:#a6e22e">button_pushed_show</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                           <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf) {
+  <span style="color:#66d9ef">return</span> sprintf(buf, <span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, gpiod_get_value(btn));
+}
+
+ssize_t <span style="color:#a6e22e">ledon_show</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                   <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf) {
+  <span style="color:#66d9ef">return</span> sprintf(buf, <span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, is_blink);
+}
+
+ssize_t <span style="color:#a6e22e">ledon_store</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t count) {
+  <span style="color:#66d9ef">int</span> ret;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> state;
+  ret <span style="color:#f92672">=</span> kstrtoul(buf, <span style="color:#ae81ff">10</span>, <span style="color:#f92672">&amp;</span>state);
+  <span style="color:#66d9ef">if</span> (ret) {
+    <span style="color:#66d9ef">return</span> ret;
+  }
+  is_blink <span style="color:#f92672">=</span> (state <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">?</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>;
+  gpiod_set_value(led, is_blink);
+  <span style="color:#66d9ef">return</span> count;
+}
+
+DEVICE_ATTR_RW(ledon);
+DEVICE_ATTR_RO(button_pushed);
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mymodule_probe</span>(<span style="color:#66d9ef">struct</span> platform_device <span style="color:#f92672">*</span>pdev) {
+  <span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pdev<span style="color:#f92672">-&gt;</span>dev;
+  led <span style="color:#f92672">=</span> gpiod_get_index(dev, <span style="color:#e6db74">&#34;led&#34;</span>, <span style="color:#ae81ff">0</span>, GPIOD_OUT_LOW);
+  btn <span style="color:#f92672">=</span> gpiod_get_index(dev, <span style="color:#e6db74">&#34;btn&#34;</span>, <span style="color:#ae81ff">0</span>, GPIOD_IN);
+  device_create_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_button_pushed);
+  device_create_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_ledon);
+  printk(<span style="color:#e6db74">&#34;mymodule PROBE</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mymodule_remove</span>(<span style="color:#66d9ef">struct</span> platform_device <span style="color:#f92672">*</span>pdev) {
+  <span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pdev<span style="color:#f92672">-&gt;</span>dev;
+  device_remove_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_button_pushed);
+  device_remove_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_ledon);
+  gpiod_put(btn);
+  gpiod_put(led);
+  printk(<span style="color:#e6db74">&#34;mymodule REMOVE</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> platform_driver mymodule <span style="color:#f92672">=</span> {
+    .probe <span style="color:#f92672">=</span> mymodule_probe,
+    .remove <span style="color:#f92672">=</span> mymodule_remove,
+    .driver <span style="color:#f92672">=</span>
+        {
+            .name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mymodule&#34;</span>,
+            .of_match_table <span style="color:#f92672">=</span> of_match_ptr(mymodule_dt),
+            .owner <span style="color:#f92672">=</span> THIS_MODULE,
+        },
+};
+module_platform_driver(mymodule);
+</code></pre></div><p>在載入裝置<code>mydevice</code>後，即可看到<code>/sys/devices/platform/mydevice/</code>目錄。</p>
+<p>在載入驅動程式<code>mymodule</code>前會發現目錄下還沒有<code>ledon</code>和<code>button_pushed</code>的屬性檔案。
+載入<code>mymodule</code>後，裝置和驅動程式產生綁定，接下來<code>probe</code>函式便會進行初始化和產生屬性檔案。</p>
+<p>接下來就可以和實驗五做過的一樣，透過簡單的腳本語言控制你實作的新GPIO裝置。</p>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/NCTU_ICT_Embedded_System/lab6/step2/" title="平台裝置/驅動程式"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/NCTU_ICT_Embedded_System/lab6/step4/" title="Demo" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1601984222"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1601984222"></script>
+    
+        
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1601984222"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+
+  </body>
+</html>
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>實驗六，核心空間GPIO裝置驅動程式 on 國立交通大學, 嵌入式作業系統設計與實作</title>
+    <link>/NCTU_ICT_Embedded_System/lab6/</link>
+    <description>Recent content in 實驗六，核心空間GPIO裝置驅動程式 on 國立交通大學, 嵌入式作業系統設計與實作</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Mon, 05 Oct 2020 03:48:21 +0000</lastBuildDate><atom:link href="/NCTU_ICT_Embedded_System/lab6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux核心模組</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step1/</link>
+      <pubDate>Mon, 05 Oct 2020 13:41:02 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step1/</guid>
+      <description>Linux提供動態載入移除核心模組的功能，使得記憶體不會被沒有使用到的模組佔據。 大部分的驅動程式都是透過Linux核心模組在開機時或開機後動態載入核心空間中。
+這個章節會教導如何寫和編譯最基礎的核心模組，使同學了解在核心空間的程式是如何運行的。
+編譯核心模組 下載Linux核心標頭檔 這次實驗會直接在樹莓派上面進行編譯核心模組的工作，因此要先下載對應的標頭檔。 不同的Linux核心版本使用的標頭檔可能會不一樣，而Raspberry Pi OS (32-bit)使用的版本可以透過以下指令下載。
+sudo apt install raspberrypi-kernel-headers 核心模組基礎程式碼 Linux的核心模組需要透過module_init和module_exit註冊載入時的初始函式和移除時的卸載函式。
+而核心模組一般而言要透過MODULE_LICENSE指定使用的軟體授權條款， 而Linux核心本身是GPL條款。 在載入核心模組時會檢查該模組的條款，如果使用的條款不是GPL相容的條款，將會無法呼叫部分Linux核心提供的函式。
+以上用到的Macro可以藉由&amp;lt;linux/module.h&amp;gt;引入。
+#include &amp;lt;linux/module.h&amp;gt; MODULE_LICENSE(&amp;#34;GPL&amp;#34;); int mymodule_init(void) { printk(&amp;#34;My Module INIT\n&amp;#34;); return 0; } void mymodule_exit(void) { printk(&amp;#34;My Module EXIT\n&amp;#34;); } module_init(mymodule_init); module_exit(mymodule_exit); 核心模組Makefile Linux核心模組在編譯過程涉及許多步驟，編譯時也要加上許多編譯選項。 可以透過make -C指定Linux核心所在目錄，並使用其提供的Makefile。
+在核心模組的Makefile需要透過obj-m標明要編譯的模組，該模組所需要用到的原始碼可以用*-objs 來指定。 接下來透過M=...指定模組原始碼的路徑後，將編譯目標設為modules即可編譯出*.ko模組。
+clean可以清除編譯產生的檔案
+obj-m += mymodule.o mymodule-objs := main.o modules: make -C /lib/modules/${shell uname -r}/build M=${PWD} modules clean: make -C /lib/modules/${shell uname -r}/build M=${PWD} clean 編譯上述範例 mkdir lab6 cd lab6 # create main.</description>
+    </item>
+    
+    <item>
+      <title>平台裝置/驅動程式</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step2/</link>
+      <pubDate>Mon, 05 Oct 2020 14:58:35 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step2/</guid>
+      <description>所有的周邊裝置都是藉由匯流排來連接， 某些裝置在在載入時可以主動通知Linux核心，此時Linux核心可以載入對應的驅動程式。 然而在嵌入式系統中，大部分的裝置都無法透過像這樣的方式讓Linux核心枚舉出現在載入的裝置。
+這種無法主動被Linux核心發現的裝置稱為平台裝置， 平台裝置通常是透過實驗五提過的裝置樹在開機時載入，而Linux核心提供了平台裝置驅動程式的框架來統一並加速相關驅動程式的開發。
+平台驅動程式範例 #include &amp;lt;linux/module.h&amp;gt; #include &amp;lt;linux/of.h&amp;gt; #include &amp;lt;linux/platform_device.h&amp;gt; MODULE_LICENSE(&amp;quot;GPL&amp;quot;); struct of_device_id mymodule_dt[] = { { .compatible = &amp;quot;mymodule&amp;quot;, }, {}, }; int mymodule_probe(struct platform_device *pdev) { printk(&amp;quot;mymodule PROBE\n&amp;quot;); return 0; } int mymodule_remove(struct platform_device *pdev) { printk(&amp;quot;mymodule REMOVE\n&amp;quot;); return 0; } struct platform_driver mymodule = { .probe = mymodule_probe, .remove = mymodule_remove, .driver = { .name = &amp;quot;mymodule&amp;quot;, .of_match_table = of_match_ptr(mymodule_dt), .owner = THIS_MODULE, }, }; module_platform_driver(mymodule); 和前面介紹過的核心模組不同，這這份程式碼中並沒有看到module_init和module_exit，取而代之的是probe和remove函式。 但是如果往下追蹤module_platform_driver這個註冊平台驅動程式的Macro會發現module_init和module_exit是被包裝在裡面的。</description>
+    </item>
+    
+    <item>
+      <title>GPIO的中斷與sysfs</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step3/</link>
+      <pubDate>Tue, 06 Oct 2020 07:31:19 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step3/</guid>
+      <description>在前面章節在前面章節簡單的介紹了平台裝置，以及如何透過Linux本身GPIO函式庫進行GPIO操作。 這個章節會介紹如果透過中斷來降低按鈕電位改變至LED的電位連帶改變的延遲。 並且介紹如何將mydevice註冊到sysfs
+中斷 CPU可以接收來自周邊裝置的硬體中斷，並在接收到中斷時才存取周邊裝置的資料。 如此一來驅動程式不需要透過輪詢持續的存取周邊裝置。
+透過Linux核心GPIO函式庫中的gpiod_to_irq可以直接拿到一個中斷號碼，中斷號碼可以再透過request_irq來註冊中斷處理函式。
+在註冊中斷處理函式時可以指定中斷的觸發方式，藉此可以達到按下按鈕和放開時都觸發該函式達到開關LED的效果。
+#include &amp;lt;linux/gpio/consumer.h&amp;gt;#include &amp;lt;linux/interrupt.h&amp;gt;#include &amp;lt;linux/module.h&amp;gt;#include &amp;lt;linux/of.h&amp;gt;#include &amp;lt;linux/platform_device.h&amp;gt; MODULE_LICENSE(&amp;#34;GPL&amp;#34;); struct of_device_id mymodule_dt[] = { { .compatible = &amp;#34;mymodule&amp;#34;, }, {}, }; int irq; struct gpio_desc* led; struct gpio_desc* btn; irqreturn_t btn_irq_handler(int irq, void* dev) { int state = gpiod_get_value(btn); gpiod_set_value(led, state); return IRQ_HANDLED; } static int mymodule_probe(struct platform_device* pdev) { struct device* dev = &amp;amp;pdev-&amp;gt;dev; int retVal; led = gpiod_get_index(dev, &amp;#34;led&amp;#34;, 0, GPIOD_OUT_LOW); btn = gpiod_get_index(dev, &amp;#34;btn&amp;#34;, 0, GPIOD_IN); irq = gpiod_to_irq(btn); retVal = request_irq(irq, btn_irq_handler, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, &amp;#34;btn_irq_handler&amp;#34;, NULL); printk(&amp;#34;mymodule PROBE, requested irq %d\n&amp;#34;, retVal); return 0; } static int mymodule_remove(struct platform_device* pdev) { free_irq(irq, NULL); gpiod_put(btn); gpiod_put(led); printk(&amp;#34;mymodule REMOVE\n&amp;#34;); return 0; } static struct platform_driver mymodule = { .</description>
+    </item>
+    
+    <item>
+      <title>Demo</title>
+      <link>/NCTU_ICT_Embedded_System/lab6/step4/</link>
+      <pubDate>Tue, 06 Oct 2020 07:31:19 +0000</pubDate>
+      
+      <guid>/NCTU_ICT_Embedded_System/lab6/step4/</guid>
+      <description>Demo 實驗當天公佈內容</description>
+    </item>
+    
+  </channel>
+</rss>
