@@ -1,7 +1,7 @@
 +++
 title = "實驗一，開發環境建置"
 date = 2020-09-23T15:46:23Z
-weight = 5
+weight = 1
 chapter = true
 +++
 
