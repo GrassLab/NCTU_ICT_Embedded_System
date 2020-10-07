@@ -43,7 +43,7 @@ irqreturn_t btn_irq_handler(int irq, void* dev) {
   return IRQ_HANDLED;
 }
 
-static int mymodule_probe(struct platform_device* pdev) {
+int mymodule_probe(struct platform_device* pdev) {
   struct device* dev = &pdev->dev;
   int retVal;
   led = gpiod_get_index(dev, "led", 0, GPIOD_OUT_LOW);
@@ -56,7 +56,7 @@ static int mymodule_probe(struct platform_device* pdev) {
   return 0;
 }
 
-static int mymodule_remove(struct platform_device* pdev) {
+int mymodule_remove(struct platform_device* pdev) {
   free_irq(irq, NULL);
   gpiod_put(btn);
   gpiod_put(led);
@@ -64,7 +64,7 @@ static int mymodule_remove(struct platform_device* pdev) {
   return 0;
 }
 
-static struct platform_driver mymodule = {
+struct platform_driver mymodule = {
     .probe = mymodule_probe,
     .remove = mymodule_remove,
     .driver =
@@ -143,7 +143,7 @@ ssize_t ledon_store(struct device *dev, struct device_attribute *attr,
 DEVICE_ATTR_RW(ledon);
 DEVICE_ATTR_RO(button_pushed);
 
-static int mymodule_probe(struct platform_device *pdev) {
+int mymodule_probe(struct platform_device *pdev) {
   struct device *dev = &pdev->dev;
   led = gpiod_get_index(dev, "led", 0, GPIOD_OUT_LOW);
   btn = gpiod_get_index(dev, "btn", 0, GPIOD_IN);
@@ -153,7 +153,7 @@ static int mymodule_probe(struct platform_device *pdev) {
   return 0;
 }
 
-static int mymodule_remove(struct platform_device *pdev) {
+int mymodule_remove(struct platform_device *pdev) {
   struct device *dev = &pdev->dev;
   device_remove_file(dev, &dev_attr_button_pushed);
   device_remove_file(dev, &dev_attr_ledon);
@@ -163,7 +163,7 @@ static int mymodule_remove(struct platform_device *pdev) {
   return 0;
 }
 
-static struct platform_driver mymodule = {
+struct platform_driver mymodule = {
     .probe = mymodule_probe,
     .remove = mymodule_remove,
     .driver =

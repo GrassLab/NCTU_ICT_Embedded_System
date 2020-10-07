@@ -131,7 +131,7 @@ int blink(void* arg) {
 	}
 	return 0;
 }
-static int mymodule_probe (struct platform_device *pdev)
+int mymodule_probe (struct platform_device *pdev)
 {
     struct device *dev = &pdev->dev;
     led = gpiod_get_index(dev, "led", 0, GPIOD_OUT_LOW);
@@ -141,7 +141,7 @@ static int mymodule_probe (struct platform_device *pdev)
     return 0;
 }
 
-static int mymodule_remove(struct platform_device *pdev)
+int mymodule_remove(struct platform_device *pdev)
 {
     kthread_stop(kthread);
     gpiod_put(btn);
@@ -150,7 +150,7 @@ static int mymodule_remove(struct platform_device *pdev)
     return 0;
 }
 
-static struct platform_driver mymodule = {
+struct platform_driver mymodule = {
     .probe      = mymodule_probe,
     .remove     = mymodule_remove,
     .driver     = {
