@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.75.1" />
+    <meta name="generator" content="Hugo 0.76.0" />
     <meta name="description" content="">
 
 
@@ -12,21 +12,21 @@
     <title>基礎準備 :: 國立交通大學, 嵌入式作業系統設計與實作</title>
 
     
-    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1601984222" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1602051378" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1602051378" rel="stylesheet">
     
-    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1601984222" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1602051378" rel="stylesheet">
     
     
 
-    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1602051378"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -74,14 +74,14 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1601984222"></script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1601984222"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1602051378"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1602051378"></script>
 <script type="text/javascript">
     
         var baseurl = "\/NCTU_ICT_Embedded_System\/";
     
 </script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1601984222"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1602051378"></script>
 
     
   </div>
@@ -765,6 +765,7 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
 <nav id="TableOfContents">
   <ul>
     <li><a href="#有線網路的替代方案">有線網路的替代方案</a></li>
+    <li><a href="#將樹莓派的無線網路設定移除">將樹莓派的無線網路設定移除</a></li>
     <li><a href="#iw">iw</a></li>
     <li><a href="#rfkill">rfkill</a></li>
     <li><a href="#無線存取點的靜態ip">無線存取點的靜態IP</a></li>
@@ -811,8 +812,24 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
 <li>樹莓派和開發主機會在同一個子網路下，路由器會負責兩者之間的封包傳送</li>
 </ul>
 </li>
+<li>將開發主機連接網際網路的網路卡和連結樹梅派的網路卡以橋接模式相連
+<ul>
+<li><a href="https://home.gamer.com.tw/creationDetail.php?sn=482917">參考</a>
+<img src="https://i.imgur.com/4VGso9n.png" alt=""></li>
 </ul>
-<h2 id="iw">iw</h2>
+</li>
+</ul>
+<h2 id="將樹莓派的無線網路設定移除">將樹莓派的無線網路設定移除</h2>
+<p>在這次期末專題中，樹梅派的無線網路會做為無線存取點。
+因此如果之前有設定將無線網路卡作為連線的設定要先移除。</p>
+<pre><code class="language-none" data-lang="none"># network={
+#        ssid=&quot;EOSDI&quot;
+#        psk=&quot;EOSDIEOSDI&quot;
+# }
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># edit /etc/wpa_supplicant/wpa-supplicant.conf and comment out as above</span>
+sudo ip link set wlan0 down
+sudo ip link set wlan0 up
+</code></pre></div><h2 id="iw">iw</h2>
 <ul>
 <li>管理無線網路裝置的命令列工具</li>
 <li>透過<a href="https://en.wikipedia.org/wiki/Netlink">netlink</a>得到在Linux核心內部與網路相關資料結構</li>
@@ -1280,19 +1297,19 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1602051378"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1601984222"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1601984222"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1602051378"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1602051378"></script>
     
         
-            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1601984222"></script>
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1602051378"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });
