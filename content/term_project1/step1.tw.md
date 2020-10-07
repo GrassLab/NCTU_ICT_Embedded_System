@@ -18,6 +18,28 @@ weight: 1
   * MobaXterm的建立連線方式選擇``serial``
 * 讓樹莓派和開發主機連在同一個路由器
   * 樹莓派和開發主機會在同一個子網路下，路由器會負責兩者之間的封包傳送
+* 將開發主機連接網際網路的網路卡和連結樹梅派的網路卡以橋接模式相連
+  * [參考](https://home.gamer.com.tw/creationDetail.php?sn=482917)
+![](https://i.imgur.com/4VGso9n.png)
+
+
+## 將樹莓派的無線網路設定移除
+
+在這次期末專題中，樹梅派的無線網路會做為無線存取點。
+因此如果之前有設定將無線網路卡作為連線的設定要先移除。
+
+```none
+# network={
+#        ssid="EOSDI"
+#        psk="EOSDIEOSDI"
+# }
+```
+
+```bash
+# edit /etc/wpa_supplicant/wpa-supplicant.conf and comment out as above
+sudo ip link set wlan0 down
+sudo ip link set wlan0 up
+```
 
 ## iw 
 * 管理無線網路裝置的命令列工具

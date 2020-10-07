@@ -85,5 +85,5 @@ iface wlan0 inet static
 
 * 使用``crontab -e``可以將要執行的內容放到[Cron](https://en.wikipedia.org/wiki/Cron)中自動執行
 ```none
-@reboot  /home/pi/your_script.sh
+@reboot  sudo /home/pi/your_script.sh
 ```
