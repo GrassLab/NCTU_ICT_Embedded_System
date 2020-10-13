@@ -52,7 +52,7 @@ int mymodule_probe(struct platform_device* pdev) {
   retVal = request_irq(irq, btn_irq_handler,
                        IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
                        "btn_irq_handler", NULL);
-  printk("mymodule PROBE, requested irq %d\n", retVal);
+  printk("mymodule PROBE, requested irq %d, succeed? %d\n", irq, retVal);
   return 0;
 }
 
