@@ -47,7 +47,7 @@ Shell Script範例 在了解了以上GPIO和sysfs的基本原理後，可以嘗�
 Sysfs與LED LED裝置可以藉由/sys/class/leds目錄存取。在該目錄下面使用ls會看到已經有其他LED裝置存在。
 每個LED裝置有自己的預設觸發方式。透過cat /sys/class/leds/led0/trigger可以看到所有的觸發方式，而當前選擇的觸發方式會被[]所框住。
 而我們也可以透過寫入字串來改變觸發方式。
-sudo sh -c &amp;#34;echo heartbeat &amp;gt; /sys/class/leds/led0/trigger`` 執行上面指令後便可以看到樹梅派的某個LED燈像心跳一樣定期的開關。
+sudo sh -c &amp;#34;echo heartbeat &amp;gt; /sys/class/leds/led0/trigger&amp;#34; 執行上面指令後便可以看到樹梅派的某個LED燈像心跳一樣定期的開關。
 和GPIO相同，LED雖然是簡單的裝置，由於要相容不一樣的LED裝置(非GPIO,可調整亮度,可調整顏色等)，Linux核心也是以結構化的方式撰寫驅動程式。 相關的原始碼在leds目錄底下。
 裝置樹 簡介 在嵌入式裝置中裝置樹是用來描述該系統中包含CPU、記憶體、中斷晶片和其他週邊裝置的檔案。 除此之外，由於GPIO的針腳可能作為不定用途使用(如LED, UART, SPI&amp;hellip;)，裝置樹可以使用overlays將額外的描述疊加上去而達到客製化針腳用途。
  裝置樹的原始碼的副檔名一般為.dts，並可以引入其他裝置樹檔案.dtsi，藉此重複使用相同程式碼。 原始碼需要先透過cpp的C前置處理器，將Macro解開。再來透過dtc指令編譯為Linux核心可以解析的二進制檔案，副檔名一般為.dtb。 .dtb最後會被放在Boot Partition也就是/boot/底下，開機後會由Bootloader載入。 Bootloader在載入裝置檔案前會檢查/boot/config.txt的內容，如果有指定dtoverlay=...或者dtparam=...則會從/boot/overlays底下尋找對應的裝置樹檔案， 並且將參數覆蓋上去。  這份文件不會額外介紹裝置樹的語法，麻煩自行參閱前述文件以及 樹梅派官方裝置樹介紹 來了解如何撰寫裝置樹。
@@ -62,7 +62,9 @@ dtc -I dts -O dtb -o myled.</description>
       <pubDate>Mon, 05 Oct 2020 12:37:30 +0000</pubDate>
       
       <guid>/NCTU_ICT_Embedded_System/lab5/step4/</guid>
-      <description>Demo 實驗當天公佈內容</description>
+      <description>Demo  以C語言程式，透過MMIO直接操作GPIO達到以下功能  按住按鈕時，LED閃爍速度由1Hz到10Hz 放開按鈕時，LED閃爍速度從原先速度慢慢降回1Hz然後停止   以shell script，透過sysfs操作GPIO達到以下功能  按住按鈕時，LED閃爍速度由1Hz到10Hz 放開按鈕時，LED閃爍速度從原先速度慢慢降回1Hz然後停止    12/2 3:30 以前完成得5分
+12/2 4:30 以前完成得4分
+之後補Demo以3分計算</description>
     </item>
     
   </channel>
