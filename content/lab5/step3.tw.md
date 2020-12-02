@@ -16,7 +16,7 @@ LED裝置可以藉由``/sys/class/leds``目錄存取。在該目錄下面使用`
 
 而我們也可以透過寫入字串來改變觸發方式。
 ```bash
-sudo sh -c "echo heartbeat > /sys/class/leds/led0/trigger``
+sudo sh -c "echo heartbeat > /sys/class/leds/led0/trigger"
 ```
 執行上面指令後便可以看到樹梅派的某個LED燈像心跳一樣定期的開關。
 
