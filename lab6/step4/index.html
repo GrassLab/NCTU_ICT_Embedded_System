@@ -12,21 +12,21 @@
     <title>Demo :: 國立交通大學, 嵌入式作業系統設計與實作</title>
 
     
-    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1608093792" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1608127134" rel="stylesheet">
     
-    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1608127134" rel="stylesheet">
     
     
 
-    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1608127134"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -74,14 +74,14 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1608093792"></script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1608093792"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1608127134"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1608127134"></script>
 <script type="text/javascript">
     
         var baseurl = "\/NCTU_ICT_Embedded_System\/";
     
 </script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1608093792"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1608127134"></script>
 
     
   </div>
@@ -815,16 +815,214 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
 </li>
 </ul>
 <p>同學可以使用<code>jiffies_to_msecs(jiffies)</code>來計算經過的時間</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/jiffies.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/delay.h&gt;</span><span style="color:#75715e">
+<p><strong>完成TODO的部分(bonus不必要)，可以再之後進行補Demo並獲得3分</strong>
+然而由於TODO是用填空的方式，如果還是有不知道要填什麼的部分，請於之後課後詢問。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/delay.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/gpio/consumer.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/interrupt.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/kthread.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/module.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/of.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/platform_device.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/sysfs.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">example</span>(<span style="color:#66d9ef">void</span>) {
-  <span style="color:#66d9ef">int</span> start_ms, end_ms;
-  start_ms <span style="color:#f92672">=</span> jiffies_to_msecs(jiffies);
-  msleep(<span style="color:#ae81ff">200</span>);
-  end_ms <span style="color:#f92672">=</span> jiffies_to_msecs(jiffies);
-  printk(<span style="color:#e6db74">&#34;%dms</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, end_ms <span style="color:#f92672">-</span> start_ms); <span style="color:#75715e">// should be around 200ms
+MODULE_LICENSE(<span style="color:#e6db74">&#34;GPL&#34;</span>);
+
+<span style="color:#66d9ef">struct</span> of_device_id mymodule_dt[] <span style="color:#f92672">=</span> {
+    {
+        .compatible <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mymodule&#34;</span>,
+    },
+    {},
+};
+
+<span style="color:#66d9ef">struct</span> task_struct <span style="color:#f92672">*</span>count_thread;
+<span style="color:#66d9ef">struct</span> task_struct <span style="color:#f92672">*</span>count_bonus_thread;
+<span style="color:#66d9ef">int</span> irq;
+
+<span style="color:#75715e">// shared variables between each methods
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> gpio_desc <span style="color:#f92672">*</span>led;
+<span style="color:#66d9ef">struct</span> gpio_desc <span style="color:#f92672">*</span>btn;
+<span style="color:#66d9ef">int</span> led_state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> time <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+
+<span style="color:#75715e">// methods
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">enum</span> {
+  PRESS_TIME,
+  PRESS_COUNT,
+  PRESS_COUNT_BONUS,
+};
+size_t current_method <span style="color:#f92672">=</span> PRESS_TIME;
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>methods[] <span style="color:#f92672">=</span> {
+    [PRESS_TIME] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;press_time&#34;</span>,
+    [PRESS_COUNT] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;press_count&#34;</span>,
+    [PRESS_COUNT_BONUS] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;press_count_bonus&#34;</span>,
+};
+
+<span style="color:#75715e">// kthread: press_count_bonus
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">press_count_bonusd</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {
+  <span style="color:#75715e">// NOTE: You don&#39;t have to do the bonus.
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// If you&#39;d like to try, finish the TODO part.
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> RESET_TIME <span style="color:#f92672">=</span> <span style="color:#ae81ff">400</span>;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> last_state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> last_click_time <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">int</span> now;
+  <span style="color:#66d9ef">int</span> current_state;
+  <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>kthread_should_stop()) {
+    msleep(<span style="color:#ae81ff">20</span>);
+    <span style="color:#66d9ef">if</span> (current_method <span style="color:#f92672">!=</span> PRESS_COUNT_BONUS) {
+      <span style="color:#66d9ef">continue</span>;
+    }
+    current_state <span style="color:#f92672">=</span> gpiod_get_value(btn);
+    now <span style="color:#f92672">=</span> jiffies_to_msecs(jiffies);
+    <span style="color:#66d9ef">if</span> (last_state <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> current_state <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) { <span style="color:#75715e">// button released
+</span><span style="color:#75715e"></span>      <span style="color:#75715e">// TODO You should do something after click.
+</span><span style="color:#75715e"></span>    }
+    <span style="color:#66d9ef">if</span> (now <span style="color:#f92672">-</span> last_click_time <span style="color:#f92672">&gt;</span> RESET_TIME) {
+      <span style="color:#75715e">// TODO if the time has passed the RESET_TIME,
+</span><span style="color:#75715e"></span>      <span style="color:#75715e">// you should reset something and switch the LED if needed.
+</span><span style="color:#75715e"></span>    }
+    last_state <span style="color:#f92672">=</span> current_state;
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#75715e">// kthread: press_count
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">press_countd</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> last_state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">int</span> current_state;
+  <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>kthread_should_stop()) {
+    msleep(<span style="color:#ae81ff">20</span>);
+    <span style="color:#66d9ef">if</span> (current_method <span style="color:#f92672">!=</span> PRESS_COUNT) {
+      <span style="color:#66d9ef">continue</span>;
+    }
+    current_state <span style="color:#f92672">=</span> gpiod_get_value(btn);
+    <span style="color:#66d9ef">if</span> (<span style="color:#75715e">/* TODO finish this condition, this should be true if button is just released ) {
+</span><span style="color:#75715e">           HINT: you can use the value of last_state and current_state. */</span>) {
+      count <span style="color:#f92672">=</span> (count <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> time;
+      <span style="color:#66d9ef">if</span> (count <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+        <span style="color:#75715e">// TODO you should switch the LED here.
+</span><span style="color:#75715e"></span>      }
+    }
+    last_state <span style="color:#f92672">=</span> current_state;
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#75715e">// irq: press_time
+</span><span style="color:#75715e"></span>irqreturn_t <span style="color:#a6e22e">btn_irq_handler</span>(<span style="color:#66d9ef">int</span> irq, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>dev) {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> last_rise <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> last_state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">int</span> current_state;
+  <span style="color:#66d9ef">int</span> now;
+  <span style="color:#66d9ef">if</span> (current_method <span style="color:#f92672">!=</span> PRESS_TIME) {
+    <span style="color:#66d9ef">return</span> IRQ_HANDLED;
+  }
+  now <span style="color:#f92672">=</span> jiffies_to_msecs(jiffies);
+  current_state <span style="color:#f92672">=</span> gpiod_get_value(btn);
+  <span style="color:#66d9ef">if</span> (<span style="color:#75715e">/* TODO finish this condition, this should be true if button is just released ) { 
+</span><span style="color:#75715e">         HINT: you can use the value of last_state and current_state.*/</span>) {
+    <span style="color:#66d9ef">if</span> (<span style="color:#75715e">/* TODO check if push time is long enough
+</span><span style="color:#75715e">           HINT: you can use last_rise, now, and time.*/</span>) {
+      led_state <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>led_state;
+      gpiod_set_value(led, led_state);
+    }
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">if</span> (last_state <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+      last_rise <span style="color:#f92672">=</span> now;
+    }
+  }
+  last_state <span style="color:#f92672">=</span> current_state;
+  <span style="color:#66d9ef">return</span> IRQ_HANDLED;
+}
+
+<span style="color:#75715e">// sysfs attribute
+</span><span style="color:#75715e"></span>ssize_t <span style="color:#a6e22e">time_show</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf) {
+  <span style="color:#75715e">// TODO write time as string into buf by sprintf as in the documentation.
 </span><span style="color:#75715e"></span>}
+
+ssize_t <span style="color:#a6e22e">time_store</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                   <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t count) {
+  <span style="color:#66d9ef">int</span> ret;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> tmp;
+  ret <span style="color:#f92672">=</span> kstrtoul(buf, <span style="color:#ae81ff">10</span>, <span style="color:#f92672">&amp;</span>tmp);
+  <span style="color:#66d9ef">if</span> (ret) {
+    <span style="color:#66d9ef">return</span> ret;
+  }
+  time <span style="color:#f92672">=</span> tmp;
+  <span style="color:#66d9ef">return</span> count;
+}
+
+ssize_t <span style="color:#a6e22e">method_show</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf) {
+  <span style="color:#66d9ef">return</span> sprintf(buf, <span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, methods[current_method]);
+}
+
+ssize_t <span style="color:#a6e22e">method_store</span>(<span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev, <span style="color:#66d9ef">struct</span> device_attribute <span style="color:#f92672">*</span>attr,
+                     <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t count) {
+  <span style="color:#66d9ef">int</span> i;
+  <span style="color:#66d9ef">char</span> str[<span style="color:#ae81ff">20</span>];
+  <span style="color:#75715e">// consume &#39;\n&#39;
+</span><span style="color:#75715e"></span>  sscanf(buf, <span style="color:#e6db74">&#34;%19s&#34;</span>, str);
+  <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> ARRAY_SIZE(methods); <span style="color:#f92672">++</span>i) {
+    <span style="color:#66d9ef">if</span> (<span style="color:#75715e">/* TODO compare str and methods[i] */</span>) {
+      current_method <span style="color:#f92672">=</span> i;
+      <span style="color:#66d9ef">return</span> count;
+    }
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>EINVAL;
+}
+
+<span style="color:#75715e">// TODO use DEVICE_ATTR_RW(...) to declare method and time device attribute
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/* initialization and exit code */</span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mymodule_probe</span>(<span style="color:#66d9ef">struct</span> platform_device <span style="color:#f92672">*</span>pdev) {
+  <span style="color:#66d9ef">int</span> ret;
+  <span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pdev<span style="color:#f92672">-&gt;</span>dev;
+  led <span style="color:#f92672">=</span> gpiod_get_index(dev, <span style="color:#e6db74">&#34;led&#34;</span>, <span style="color:#ae81ff">0</span>, GPIOD_OUT_LOW);
+  btn <span style="color:#f92672">=</span> gpiod_get_index(dev, <span style="color:#e6db74">&#34;btn&#34;</span>, <span style="color:#ae81ff">0</span>, GPIOD_IN);
+  gpiod_set_value(led, led_state);
+  count_thread <span style="color:#f92672">=</span> kthread_run(press_countd, NULL, <span style="color:#e6db74">&#34;press_countd&#34;</span>);
+  count_bonus_thread <span style="color:#f92672">=</span>
+      kthread_run(press_count_bonusd, NULL, <span style="color:#e6db74">&#34;press_count_bonusd&#34;</span>);
+  irq <span style="color:#f92672">=</span> gpiod_to_irq(btn);
+  ret <span style="color:#f92672">=</span> request_irq(irq, btn_irq_handler,
+                    IRQF_TRIGGER_RISING <span style="color:#f92672">|</span> IRQF_TRIGGER_FALLING,
+                    <span style="color:#e6db74">&#34;btn_irq_handler&#34;</span>, NULL);
+
+  device_create_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_method);
+  device_create_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_time);
+  printk(<span style="color:#e6db74">&#34;mymodule PROBE</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mymodule_remove</span>(<span style="color:#66d9ef">struct</span> platform_device <span style="color:#f92672">*</span>pdev) {
+  <span style="color:#66d9ef">struct</span> device <span style="color:#f92672">*</span>dev <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pdev<span style="color:#f92672">-&gt;</span>dev;
+  device_remove_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_time);
+  device_remove_file(dev, <span style="color:#f92672">&amp;</span>dev_attr_method);
+  free_irq(irq, NULL);
+  kthread_stop(count_thread);
+  kthread_stop(count_bonus_thread);
+  gpiod_put(btn);
+  gpiod_put(led);
+  printk(<span style="color:#e6db74">&#34;mymodule REMOVE</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">struct</span> platform_driver mymodule <span style="color:#f92672">=</span> {
+    .probe <span style="color:#f92672">=</span> mymodule_probe,
+    .remove <span style="color:#f92672">=</span> mymodule_remove,
+    .driver <span style="color:#f92672">=</span>
+        {
+            .name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mymodule&#34;</span>,
+            .of_match_table <span style="color:#f92672">=</span> of_match_ptr(mymodule_dt),
+            .owner <span style="color:#f92672">=</span> THIS_MODULE,
+        },
+};
+module_platform_driver(mymodule);
+
 </code></pre></div>
 
 <footer class="footline">
@@ -1274,19 +1472,19 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1608127134"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1608093792"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1608127134"></script>
     
         
-            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1608093792"></script>
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1608127134"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });
