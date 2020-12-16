@@ -109,7 +109,7 @@
 	"title": "Demo",
 	"tags": [],
 	"description": "",
-	"content": "Demo 實驗當天公佈內容\n"
+	"content": "Demo 實做平台裝置驅動程式，使其可以透過按鈕來開關LED燈\n該驅動程式必須完成以下功能\n 在sysfs下新增裝置屬性method和time，使用者可以透過寫入裝置屬性來控制按鈕開關LED的方式，並可以透過讀取裝置屬性來得知當前開關之設定  method的可能值有press_time和press_count兩種，預設為press_time。 time的可能值為大於等於1的整數。 如果使用者輸入非法數值，則維持先前數值   在method為press_time的情況下，請實做以下功能  以中斷的方式得知按鈕持續按壓的時間 若按壓時間超過time設置的時間，則將LED切換為打開/關閉 time的單位可以為秒或者毫秒   在method為press_count的情況下，請實做以下功能  以kthread的方式監控按鈕連擊的次數 若連擊次數剛好等於time，則將LED切換為打開/關閉    同學可以使用jiffies_to_msecs(jiffies)來計算經過的時間\n#include \u0026lt;linux/jiffies.h\u0026gt;#include \u0026lt;linux/delay.h\u0026gt; void example(void) { int start_ms, end_ms; start_ms = jiffies_to_msecs(jiffies); msleep(200); end_ms = jiffies_to_msecs(jiffies); printk(\u0026#34;%dms\\n\u0026#34;, end_ms - start_ms); // should be around 200ms } "
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/term_project1/step4/",

@@ -12,21 +12,21 @@
     <title>Demo :: 國立交通大學, 嵌入式作業系統設計與實作</title>
 
     
-    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1606885681" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1606885681" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1608093792" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1608093792" rel="stylesheet">
     
-    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1606885681" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1608093792" rel="stylesheet">
     
     
 
-    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1606885681"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1608093792"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -74,14 +74,14 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1606885681"></script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1606885681"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1608093792"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1608093792"></script>
 <script type="text/javascript">
     
         var baseurl = "\/NCTU_ICT_Embedded_System\/";
     
 </script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1606885681"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1608093792"></script>
 
     
   </div>
@@ -790,8 +790,42 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
 
 
 <h2 id="demo">Demo</h2>
-<p>實驗當天公佈內容</p>
-
+<p>實做平台裝置驅動程式，使其可以透過按鈕來開關LED燈</p>
+<p>該驅動程式必須完成以下功能</p>
+<ul>
+<li>在sysfs下新增裝置屬性<code>method</code>和<code>time</code>，使用者可以透過寫入裝置屬性來控制按鈕開關LED的方式，並可以透過讀取裝置屬性來得知當前開關之設定
+<ul>
+<li><code>method</code>的可能值有<code>press_time</code>和<code>press_count</code>兩種，預設為<code>press_time</code>。</li>
+<li><code>time</code>的可能值為大於等於1的整數。</li>
+<li>如果使用者輸入非法數值，則維持先前數值</li>
+</ul>
+</li>
+<li>在<code>method</code>為<code>press_time</code>的情況下，請實做以下功能
+<ul>
+<li>以中斷的方式得知按鈕持續按壓的時間</li>
+<li>若按壓時間超過<code>time</code>設置的時間，則將LED切換為打開/關閉</li>
+<li><code>time</code>的單位可以為秒或者毫秒</li>
+</ul>
+</li>
+<li>在<code>method</code>為<code>press_count</code>的情況下，請實做以下功能
+<ul>
+<li>以kthread的方式監控按鈕連擊的次數</li>
+<li>若連擊次數剛好等於<code>time</code>，則將LED切換為打開/關閉</li>
+</ul>
+</li>
+</ul>
+<p>同學可以使用<code>jiffies_to_msecs(jiffies)</code>來計算經過的時間</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/jiffies.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/delay.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">example</span>(<span style="color:#66d9ef">void</span>) {
+  <span style="color:#66d9ef">int</span> start_ms, end_ms;
+  start_ms <span style="color:#f92672">=</span> jiffies_to_msecs(jiffies);
+  msleep(<span style="color:#ae81ff">200</span>);
+  end_ms <span style="color:#f92672">=</span> jiffies_to_msecs(jiffies);
+  printk(<span style="color:#e6db74">&#34;%dms</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, end_ms <span style="color:#f92672">-</span> start_ms); <span style="color:#75715e">// should be around 200ms
+</span><span style="color:#75715e"></span>}
+</code></pre></div>
 
 <footer class="footline">
 	
@@ -1240,19 +1274,19 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1606885681"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1608093792"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1606885681"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1606885681"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1608093792"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1608093792"></script>
     
         
-            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1606885681"></script>
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1608093792"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });
