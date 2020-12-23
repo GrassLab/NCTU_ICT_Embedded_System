@@ -6,9 +6,10 @@ weight: 3
 
 ## 需要實作的無線路由器基本功能
 
-* 按鈕開關樹莓派的無線存取點功能。
-* LED燈指示當前無線存取點功能是否開啟。
-* 若當前有封包藉由無線存取點接收則亮燈，反之暗燈。
+基本功能的無線路由器需要用到1個按鈕和2個LED燈。
+* 按鈕作為開關樹莓派的無線存取點功能。
+* 其中一個LED燈指示當前無線存取點功能是否開啟。
+* 另外一個LED燈在接收和傳送封包時會閃爍。
 * 重新啟動樹莓派後，所有服務需要自動重啟。
 
 ## Python範例程式
@@ -20,7 +21,7 @@ weight: 3
 import os
 import psutil
 
-# 可以從sysfs讀取wlan0累積讀取的封包大小
+# 可以從sysfs讀取wlan0累積接收的封包大小
 with open('/sys/class/net/wlan0/statistics/rx_bytes', 'r') as rx:
     rbytes = int(rx.readline())
 # 可以藉由os.system()來執行命令列程式
@@ -42,9 +43,9 @@ hostapd_running = 'hostapd' in (p.name() for p in psutil.process_iter())
 **Linux核心模組**
 
 * 若是外部核心模組需要先進行以下步驟
-  * 將``<模組>.ko``複製到``/lib/modules/$(uname -r)/``目錄底下
-  * ``depmod``指令建立模組的關係圖
-  * 可以用``modprobe <模組>``來確定是否成功
+  1. 將``<模組>.ko``複製到``/lib/modules/$(uname -r)/``目錄底下
+  2. ``depmod``指令建立模組的關係圖
+  3. 可以用``modprobe <模組>``來確定是否成功
 * 在``/etc/modules``加入模組名稱
 
 **overlays**
