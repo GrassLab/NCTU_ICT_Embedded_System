@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.79.0" />
+    <meta name="generator" content="Hugo 0.79.1" />
     <meta name="description" content="">
 
 
@@ -12,21 +12,21 @@
     <title>無線路由器基本功能需求 :: 國立交通大學, 嵌入式作業系統設計與實作</title>
 
     
-    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1608127134" rel="stylesheet">
-    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/nucleus.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/fontawesome-all.min.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hybrid.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/featherlight.min.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/perfect-scrollbar.min.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/auto-complete.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/atom-one-dark-reasonable.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme.css?1608698704" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/hugo-theme.css?1608698704" rel="stylesheet">
     
-    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1608127134" rel="stylesheet">
+    <link href="/NCTU_ICT_Embedded_System/css/theme-blue.css?1608698704" rel="stylesheet">
     
     
 
-    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery-3.3.1.min.js?1608698704"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -74,14 +74,14 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1608127134"></script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1608127134"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/lunr.min.js?1608698704"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/auto-complete.js?1608698704"></script>
 <script type="text/javascript">
     
         var baseurl = "\/NCTU_ICT_Embedded_System\/";
     
 </script>
-<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1608127134"></script>
+<script type="text/javascript" src="/NCTU_ICT_Embedded_System/js/search.js?1608698704"></script>
 
     
   </div>
@@ -792,10 +792,11 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
 
 
 <h2 id="需要實作的無線路由器基本功能">需要實作的無線路由器基本功能</h2>
+<p>基本功能的無線路由器需要用到1個按鈕和2個LED燈。</p>
 <ul>
-<li>按鈕開關樹莓派的無線存取點功能。</li>
-<li>LED燈指示當前無線存取點功能是否開啟。</li>
-<li>若當前有封包藉由無線存取點接收則亮燈，反之暗燈。</li>
+<li>按鈕作為開關樹莓派的無線存取點功能。</li>
+<li>其中一個LED燈指示當前無線存取點功能是否開啟。</li>
+<li>另外一個LED燈在接收和傳送封包時會閃爍。</li>
 <li>重新啟動樹莓派後，所有服務需要自動重啟。</li>
 </ul>
 <h2 id="python範例程式">Python範例程式</h2>
@@ -804,7 +805,7 @@ document.getElementById("homepage").href="/NCTU_ICT_Embedded_System/" + postfix
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
 <span style="color:#f92672">import</span> psutil
 
-<span style="color:#75715e"># 可以從sysfs讀取wlan0累積讀取的封包大小</span>
+<span style="color:#75715e"># 可以從sysfs讀取wlan0累積接收的封包大小</span>
 <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;/sys/class/net/wlan0/statistics/rx_bytes&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> rx:
     rbytes <span style="color:#f92672">=</span> int(rx<span style="color:#f92672">.</span>readline())
 <span style="color:#75715e"># 可以藉由os.system()來執行命令列程式</span>
@@ -820,11 +821,11 @@ hostapd_running <span style="color:#f92672">=</span> <span style="color:#e6db74"
 <p><strong>Linux核心模組</strong></p>
 <ul>
 <li>若是外部核心模組需要先進行以下步驟
-<ul>
+<ol>
 <li>將<code>&lt;模組&gt;.ko</code>複製到<code>/lib/modules/$(uname -r)/</code>目錄底下</li>
 <li><code>depmod</code>指令建立模組的關係圖</li>
 <li>可以用<code>modprobe &lt;模組&gt;</code>來確定是否成功</li>
-</ul>
+</ol>
 </li>
 <li>在<code>/etc/modules</code>加入模組名稱</li>
 </ul>
@@ -1315,19 +1316,19 @@ iface wlan0 inet static
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/clipboard.min.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.min.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/perfect-scrollbar.jquery.min.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/jquery.sticky.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/featherlight.min.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/highlight.pack.js?1608698704"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1608127134"></script>
-    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1608127134"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/modernizr.custom-3.6.0.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/learn.js?1608698704"></script>
+    <script src="/NCTU_ICT_Embedded_System/js/hugo-learn.js?1608698704"></script>
     
         
-            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1608127134"></script>
+            <script src="/NCTU_ICT_Embedded_System/mermaid/mermaid.js?1608698704"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });

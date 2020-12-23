@@ -4,7 +4,7 @@
 	"title": "基礎準備",
 	"tags": [],
 	"description": "",
-	"content": "有線網路的替代方案 在先前實驗都是由SSH透過有線網路連入樹莓派當中。 由於這次實驗有線網路需要連到其他路由器而非開發的個人電腦， 因此需要透過其他的方式在樹莓派上開發。 以下是幾個可能的作法。\n 將樹莓派接上鍵盤滑鼠和螢幕 使用UART連結樹莓派和主機  將TTL線的RX接到樹莓派的TX針腳，TTL線的TX接到樹莓派的RX針腳，將接地互接。 在/boot/config.txt加上enable_uart=1 MobaXterm的建立連線方式選擇serial   讓樹莓派和開發主機連在同一個路由器  樹莓派和開發主機會在同一個子網路下，路由器會負責兩者之間的封包傳送   將開發主機連接網際網路的網路卡和連結樹梅派的網路卡以橋接模式相連  參考     將樹莓派的無線網路設定移除 在這次期末專題中，樹梅派的無線網路會做為無線存取點。 因此如果之前有設定將無線網路卡作為連線的設定要先移除。\n# network={ # ssid=\u0026quot;EOSDI\u0026quot; # psk=\u0026quot;EOSDIEOSDI\u0026quot; # } # edit /etc/wpa_supplicant/wpa-supplicant.conf and comment out as above sudo ip link set wlan0 down sudo ip link set wlan0 up iw  管理無線網路裝置的命令列工具 透過netlink得到在Linux核心內部與網路相關資料結構 透過iw list可以看到樹莓派支援AP(無線網路存取點)的功能   rfkill  啟動和關閉無線裝置的工具(藍芽、無線網路) 使用rfkill list可以看到目前無線裝置是否啟用 使用rfkill unblock 0可以將屏蔽解除  無線存取點的靜態IP  由於其他裝置需要透過透過樹莓派連上網際網路，這些裝置要知道無線存取點的IP 使用 sudo ip addr add 192.168.20.1/24 dev wlan0 可以手動賦予無線網路介面卡靜態IP  這個IP位址和其子網域不能和其他網域重疊，否則在傳遞封包時可能會無法送到正確的網路介面卡    "
+	"content": "有線網路的替代方案 在先前實驗都是由SSH透過有線網路連入樹莓派當中。 由於這次實驗有線網路需要連到其他路由器而非開發的個人電腦， 因此需要透過其他的方式在樹莓派上開發。 以下是幾個可能的作法。\n 將樹莓派接上鍵盤滑鼠和螢幕 使用UART連結樹莓派和主機  將TTL線的RX接到樹莓派的TX針腳，TTL線的TX接到樹莓派的RX針腳，將接地互接。 在/boot/config.txt加上enable_uart=1 MobaXterm的建立連線方式選擇serial   讓樹莓派和開發主機連在同一個路由器  樹莓派和開發主機會在同一個子網路下，路由器會負責兩者之間的封包傳送   將開發主機連接網際網路的網路卡和連結樹梅派的網路卡以橋接模式相連(如果開發主機是以無線網路連至網際網路，此方法可能不會成功) 將開發主機作為路由器，把連到網際網路的網路介面卡以分享網路的方式，分享給與樹莓派連接之有線網路介面卡   將樹莓派的無線網路設定移除 在這次期末專題中，樹梅派的無線網路會做為無線存取點。 因此如果之前有設定將無線網路卡作為連線的設定要先移除。\n# network={ # ssid=\u0026quot;EOSDI\u0026quot; # psk=\u0026quot;EOSDIEOSDI\u0026quot; # } # edit /etc/wpa_supplicant/wpa-supplicant.conf and comment out as above sudo ip link set wlan0 down sudo ip link set wlan0 up iw  管理無線網路裝置的命令列工具 透過netlink得到在Linux核心內部與網路相關資料結構 透過iw list可以看到樹莓派支援AP(無線網路存取點)的功能   rfkill  啟動和關閉無線裝置的工具(藍芽、無線網路) 使用rfkill list可以看到目前無線裝置是否啟用 使用rfkill unblock 0可以將屏蔽解除  無線存取點的靜態IP  由於其他裝置需要透過透過樹莓派連上網際網路，這些裝置要知道無線存取點的IP 使用 sudo ip addr add 192.168.20.1/24 dev wlan0 可以手動賦予無線網路介面卡靜態IP  這個IP位址和其子網域不能和其他網域重疊，否則在傳遞封包時可能會無法送到正確的網路介面卡    "
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/lab6/step1/",
@@ -81,7 +81,7 @@
 	"title": "無線路由器基本功能需求",
 	"tags": [],
 	"description": "",
-	"content": "需要實作的無線路由器基本功能  按鈕開關樹莓派的無線存取點功能。 LED燈指示當前無線存取點功能是否開啟。 若當前有封包藉由無線存取點接收則亮燈，反之暗燈。 重新啟動樹莓派後，所有服務需要自動重啟。  Python範例程式 這個期末專題不限定用C，Python，或者Shell Script。 但是如果同學想要使用Python，下方的範例程式可能會有幫助\nimport os import psutil # 可以從sysfs讀取wlan0累積讀取的封包大小 with open(\u0026#39;/sys/class/net/wlan0/statistics/rx_bytes\u0026#39;, \u0026#39;r\u0026#39;) as rx: rbytes = int(rx.readline()) # 可以藉由os.system()來執行命令列程式 os.system(\u0026#39;service hostapd start\u0026#39;) os.system(\u0026#39;service hostapd stop\u0026#39;) # 可以藉由psutil來確認hostapd是否執行中 hostapd_running = \u0026#39;hostapd\u0026#39; in (p.name() for p in psutil.process_iter()) 開機後自動啟動服務和設定 對於一般使用者而言，在嵌入式裝置在每次重新開機後手動啟動對應服務和設定是不可能的。 因此需要啟動的背景程式和設定檔必須要紀錄在檔案系統中。 在重新開機之後，初始化的程式透過預設的腳本來將服務一一啟動。\n在不同的Linux發行板可能有不一樣的自動啟動服務方式，以下是在樹莓派上可行的自動啟動服務方式。\nLinux核心模組\n 若是外部核心模組需要先進行以下步驟  將\u0026lt;模組\u0026gt;.ko複製到/lib/modules/$(uname -r)/目錄底下 depmod指令建立模組的關係圖 可以用modprobe \u0026lt;模組\u0026gt;來確定是否成功   在/etc/modules加入模組名稱  overlays\n 將指定的\u0026lt;overlay名稱\u0026gt;.dtbo放到/boot/overlays 在/boot/config.txt加入dtoverlay=\u0026lt;overlay名稱\u0026gt;  靜態IP\n 在/etc/network/interfaces加入以下內容  auto wlan0 iface wlan0 inet static address 192.168.20.1 network 192.168.20.0 netmask 255.255.255.0 hostapd\n 將hostapd.conf複製到/etc/hostapd/hostapd.conf sudo systemctl unmask hostapd將對應服務屏蔽解除  ip_forward\n 在/etc/sysctl.conf加入net.ipv4.ip_forward=1  iptables\n sudo apt install iptables-persistent 下載套件 sudo iptables-save \u0026gt; /etc/iptables/rules.v4 將現有的IP轉換規則儲存  dhcpd\n 將dhcpd.conf複製到/etc/dhcp/dhcpd.conf  一般腳本\n 使用crontab -e可以將要執行的內容放到Cron中自動執行  @reboot sudo /home/pi/your_script.sh "
+	"content": "需要實作的無線路由器基本功能 基本功能的無線路由器需要用到1個按鈕和2個LED燈。\n 按鈕作為開關樹莓派的無線存取點功能。 其中一個LED燈指示當前無線存取點功能是否開啟。 另外一個LED燈在接收和傳送封包時會閃爍。 重新啟動樹莓派後，所有服務需要自動重啟。  Python範例程式 這個期末專題不限定用C，Python，或者Shell Script。 但是如果同學想要使用Python，下方的範例程式可能會有幫助\nimport os import psutil # 可以從sysfs讀取wlan0累積接收的封包大小 with open(\u0026#39;/sys/class/net/wlan0/statistics/rx_bytes\u0026#39;, \u0026#39;r\u0026#39;) as rx: rbytes = int(rx.readline()) # 可以藉由os.system()來執行命令列程式 os.system(\u0026#39;service hostapd start\u0026#39;) os.system(\u0026#39;service hostapd stop\u0026#39;) # 可以藉由psutil來確認hostapd是否執行中 hostapd_running = \u0026#39;hostapd\u0026#39; in (p.name() for p in psutil.process_iter()) 開機後自動啟動服務和設定 對於一般使用者而言，在嵌入式裝置在每次重新開機後手動啟動對應服務和設定是不可能的。 因此需要啟動的背景程式和設定檔必須要紀錄在檔案系統中。 在重新開機之後，初始化的程式透過預設的腳本來將服務一一啟動。\n在不同的Linux發行板可能有不一樣的自動啟動服務方式，以下是在樹莓派上可行的自動啟動服務方式。\nLinux核心模組\n 若是外部核心模組需要先進行以下步驟  將\u0026lt;模組\u0026gt;.ko複製到/lib/modules/$(uname -r)/目錄底下 depmod指令建立模組的關係圖 可以用modprobe \u0026lt;模組\u0026gt;來確定是否成功   在/etc/modules加入模組名稱  overlays\n 將指定的\u0026lt;overlay名稱\u0026gt;.dtbo放到/boot/overlays 在/boot/config.txt加入dtoverlay=\u0026lt;overlay名稱\u0026gt;  靜態IP\n 在/etc/network/interfaces加入以下內容  auto wlan0 iface wlan0 inet static address 192.168.20.1 network 192.168.20.0 netmask 255.255.255.0 hostapd\n 將hostapd.conf複製到/etc/hostapd/hostapd.conf sudo systemctl unmask hostapd將對應服務屏蔽解除  ip_forward\n 在/etc/sysctl.conf加入net.ipv4.ip_forward=1  iptables\n sudo apt install iptables-persistent 下載套件 sudo iptables-save \u0026gt; /etc/iptables/rules.v4 將現有的IP轉換規則儲存  dhcpd\n 將dhcpd.conf複製到/etc/dhcp/dhcpd.conf  一般腳本\n 使用crontab -e可以將要執行的內容放到Cron中自動執行  @reboot sudo /home/pi/your_script.sh "
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/lab3/",
@@ -116,7 +116,7 @@
 	"title": "Demo",
 	"tags": [],
 	"description": "",
-	"content": "Demo 實驗當天公佈內容\n"
+	"content": "Demo 基本功能 如果同學只想完成基本功能，請參照前一章節之基本功能。 完成後於12/30在課堂上Demo\n額外功能 如果同學想要額外加分，可以參考期末專題二，無線路由器額外功能，自行發揮創意新增功能至原先無線路由器。\n完成後，參與創創工坊舉辦之\u0026quot;OPEN LABs 之花生什麼事\u0026quot;活動。 最終會根據同學最後成果的完成度進行評分。\n"
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/lab5/step4/",
@@ -165,7 +165,7 @@
 	"title": "期末專題二，無線路由器額外功能",
 	"tags": [],
 	"description": "",
-	"content": "期末專題二，無線路由器額外功能 在期末專題的第一部份，已經完成了簡單的無線路由器功能。 在期末專題的第二部份，請同學結合之前實驗所學到的東西，自行開發出其他額外的功能。 在第15週上課時，同學可以分享自己額外的實做了什麼功能，背後用了什麼樣的技術，最後會給予一個綜合的評分作為期末專題的成績。\n實做的功能不限於和路由器相關，加入功能如感測溫度相關驅動程式也是可行的方向。 以下列出幾項可能可以實做的項目，同學也可以自由發揮。\n 結合Line Bot  遠端控制無線存取點開關 當有不明裝置連入時，使用Line Bot主動通知   額外路由器功能  引入更多統計數據像是不同時間使用流量情形 在封包轉送規則中可以阻擋某些類型的封包   增加或改善驅動程式  讓所有寫死的參數可以由使用者調整   增加使用者界面  可以透過WEB或者GUI讓使用者有更多視覺化的數據體驗    "
+	"content": "以下列出幾項可能可以實做的項目，同學也可以自由發揮。\n 結合Line Bot  遠端控制無線存取點開關 當有不明裝置連入時，使用Line Bot主動通知   額外路由器功能  引入更多統計數據像是不同時間使用流量情形 在封包轉送規則中可以阻擋某些類型的封包   增加使用者界面  可以透過WEB或者GUI讓使用者有更多視覺化的數據體驗    "
 },
 {
 	"uri": "/NCTU_ICT_Embedded_System/",
